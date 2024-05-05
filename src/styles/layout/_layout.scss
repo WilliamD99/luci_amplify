@@ -1,0 +1,81 @@
+@import "./leftbar";
+@import "./sidebar";
+@import "./top";
+
+.app_background {
+  background: radial-gradient(
+      circle at 50% 50%,
+      rgb(
+          nth($--dt_color-plt-gray-10, 1),
+          nth($--dt_color-plt-gray-10, 2),
+          nth($--dt_color-plt-gray-10, 3)
+        )
+        20%,
+      transparent 80%
+    ),
+    conic-gradient(
+      from 45deg at 50% 50%,
+      rgb(
+          nth($--dt_color-plt-gray-0, 1),
+          nth($--dt_color-plt-gray-0, 2),
+          nth($--dt_color-plt-gray-0, 3)
+        )
+        0%,
+      rgb(
+          nth($--dt_color-plt-gray-10, 1),
+          nth($--dt_color-plt-gray-10, 2),
+          nth($--dt_color-plt-gray-10, 3)
+        )
+        25%,
+      rgb(
+          nth($--dt_color-plt-gray-0, 1),
+          nth($--dt_color-plt-gray-0, 2),
+          nth($--dt_color-plt-gray-0, 3)
+        )
+        50%,
+      rgb(
+          nth($--dt_color-plt-gray-10, 1),
+          nth($--dt_color-plt-gray-10, 2),
+          nth($--dt_color-plt-gray-10, 3)
+        )
+        75%,
+      rgb(
+          nth($--dt_color-plt-gray-0, 1),
+          nth($--dt_color-plt-gray-0, 2),
+          nth($--dt_color-plt-gray-0, 3)
+        )
+        100%
+    );
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.app_main {
+  height: calc(100vh - 40px);
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 70px auto;
+  grid-template: "sidebar app_workspace" / 76px auto;
+}
+
+.app_workspace {
+  grid-template: "app_workspace--layout" 1fr "app_workspace--banner" / auto;
+  grid-area: app_workspace;
+  padding-bottom: 4px;
+  padding-right: 4px;
+  display: grid;
+  position: relative;
+
+  &--layout {
+    border: 1px solid #797c814d;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: none;
+  }
+}
+
+.resize-handler {
+  border-left: 1px solid #797c814d;
+}
