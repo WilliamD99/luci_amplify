@@ -1,44 +1,21 @@
-"use client";
+import React from "react";
+import SideBarClient from "./SidebarClient";
+import { cookieBasedClient, isAuthenticated } from "@/utils/amplify-utils";
+import { getRoomList, getUserById } from "@/utils/fetching-server";
 
-import React, { useState } from "react";
-
-import { PlusIcon } from "@heroicons/react/24/solid";
-import SidebarAvatar from "./SidebarAvatar";
-import RoomNavigations from "./RoomNavigations";
-import MenuNavigations from "./MenuNavigations";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-export default function SideBar() {
+export default async function SideBar({}) {
+  let loginData = null,
+    userData = null,
+    rooms = null;
+  loginData = await isAuthenticated();
+  // if (!userId) return <></>;
+  if (typeof loginData === "object") {
+    userData = await getUserById(loginData.id);
+    rooms = await getRoomList();
+  }
   return (
     <>
-      <div className="sidebar">
-        <div className="sidebar--top">
-          {/* Room btns */}
-          <RoomNavigations />
-          {/* Utils btns */}
-          <MenuNavigations />
-        </div>
-        <div className="sidebar--bot">
-          {/* <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <button className="sidebar--bot__btn">
-                  <PlusIcon className="h-5 w-5 icon" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black" side="right" sideOffset={10}>
-                <p className="text-xs text-white">Create new</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <SidebarAvatar /> */}
-        </div>
-      </div>
+      <SideBarClient userData={userData} rooms={rooms} />
     </>
   );
 }

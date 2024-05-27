@@ -1,20 +1,27 @@
 import { cookieBasedClient, isAuthenticated } from "@/utils/amplify-utils";
 import React from "react";
+import ProfileClient from "./ProfileClient";
+import { Schema } from "../../../amplify/data/resource";
 
 export default async function Profile() {
-  const userId = await isAuthenticated();
-  console.log(userId);
-  console.log(userId, "test");
+  const userData = await isAuthenticated();
 
-  if (!userId) return;
+  if (!userData) return;
 
-  const { data: userData } = await cookieBasedClient.models.Post.list();
+  let userId = userData.id;
 
-  console.log(userData);
+  let { data, errors } = await cookieBasedClient.models.User.get({
+    id: userId,
+  });
+
+  if (!data) return;
 
   return (
     <>
-      <div>Profile</div>
+      <div id="profile" className="h-full w-full relative">
+        <p className="font-semibold text-lg">Edit your profile</p>
+        <ProfileClient userData={data} />
+      </div>
     </>
   );
 }

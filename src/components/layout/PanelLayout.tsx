@@ -25,11 +25,12 @@ export default function PanelLayout({
         >
           {children[0]}
         </Panel>
-        <PanelResizeHandle className="w-2 resize-handler" />
         <Panel
-          className="app_workspace--layout__right"
+          className="app_workspace--layout__right h-full relative"
           defaultSize={defaultLayout[1]}
         >
+          <PanelResizeHandle className="w-2 h-full resize-handler" />
+
           {children[1]}
         </Panel>
       </PanelGroup>

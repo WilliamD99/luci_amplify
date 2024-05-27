@@ -1,0 +1,80 @@
+.modal {
+  > button {
+    color: white;
+  }
+}
+
+#md_create-room {
+  z-index: 1000;
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  #md_create-room-form {
+    .input {
+      background-color: #1a1d21;
+      border: 1px solid rgba(121, 124, 129, 0.3019607843);
+      color: $white;
+      .cmd_input {
+        &:focus {
+          outline: none;
+          box-shadow: none !important;
+        }
+      }
+      .cmd_item-wrapper {
+        &:hover {
+          background-color: $gray_hovered;
+        }
+        &[aria-selected="true"] {
+          background-color: $gray_hovered;
+        }
+      }
+      .cmd_item {
+        color: $white;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  }
+}
+
+#md_add-user-room {
+  z-index: 1000;
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+
+  &__modal {
+    z-index: 1001;
+    background-color: #1a1d21;
+    border: 1px solid rgba(121, 124, 129, 0.3019607843);
+
+    .cta {
+      background-color: $gray_hovered;
+    }
+  }
+
+  .btn {
+    border: 1px solid rgba(121, 124, 129, 0.3019607843);
+    &:hover {
+      background-color: $gray_hovered;
+    }
+  }
+
+  .input {
+    background-color: transparent;
+    border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  }
+
+  .list {
+    .content {
+      transition: 0.3s ease;
+      &:hover {
+        background-color: $gray_hovered;
+      }
+
+      .add {
+        border: none;
+        background-color: rgb(67, 19, 73);
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+#room {
+  height: 100%;
+  width: 100%;
+  z-index: 51;
+  &__header {
+    border-bottom: 1px solid rgba(121, 124, 129, 0.3019607843);
+
+    .btn {
+      border: 1px solid rgba(121, 124, 129, 0.3019607843);
+      &:hover {
+        background-color: $gray_hovered;
+      }
+    }
+  }
+
+  &__text-editor {
+    padding: 10px 20px;
+
+    .editor {
+      position: relative;
+      div {
+        height: 100%;
+        border-radius: 16px;
+      }
+      .tiptap {
+        border: 1px solid rgba(121, 124, 129, 0.3019607843);
+        border-radius: 16px;
+        > :first-child {
+          padding-top: 5px;
+        }
+        > * {
+          padding-left: 10px;
+        }
+        // > * {
+        //   padding: 6px;
+        // }
+      }
+    }
+  }
+}

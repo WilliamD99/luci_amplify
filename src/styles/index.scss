@@ -1,7 +1,39 @@
 @import "./colors";
 @import "./layout/layout";
-
+@import "./pages/profile";
+@import "./pages/room";
+@import "./components/modal";
+@import "./components/notification";
 p,
-a {
+a,
+span {
   color: rgb(209, 210, 211);
+}
+
+input {
+  &:focus {
+    box-shadow: 0 0 0 1px rgba(29, 155, 209, 1) !important;
+  }
+}
+
+.loader {
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.divider {
+  background-color: rgba(121, 124, 129, 0.3019607843);
 }

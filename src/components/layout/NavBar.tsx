@@ -1,31 +1,29 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-import Link from "next/link";
-import { Button, Divider, Flex } from "@aws-amplify/ui-react";
-import { signOut } from "aws-amplify/auth";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { Hub } from "aws-amplify/utils";
+// import { isAuthenticated } from "@/utils/amplify-utils";
 
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-
-export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
+export default function NavBar() {
+  // const userId = await isAuthenticated();
   const router = useRouter();
 
-  const [authCheck, setAuthCheck] = useState(isSignedIn);
+  // const [authCheck, setAuthCheck] = useState();
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     const hubListenerCancel = Hub.listen("auth", (data) => {
       switch (data.payload.event) {
         case "signedIn":
-          setAuthCheck(true);
+          // setAuthCheck(true);
           startTransition(() => router.push("/"));
           startTransition(() => router.refresh());
 
           break;
         case "signedOut":
-          setAuthCheck(false);
+          // setAuthCheck(false);
           startTransition(() => router.push("/"));
           startTransition(() => router.refresh());
 
@@ -36,29 +34,29 @@ export default function NavBar({ isSignedIn }: { isSignedIn: boolean }) {
     return () => hubListenerCancel();
   }, [router]);
 
-  const signOutSignIn = async () => {
-    if (authCheck) {
-      await signOut();
-    } else {
-      router.push("/signin");
-    }
-  };
+  // const signOutSignIn = async () => {
+  //   if (authCheck) {
+  //     await signOut();
+  //   } else {
+  //     router.push("/signin");
+  //   }
+  // };
 
-  const defaultRoutes = [
-    {
-      href: "/",
-      label: "Home",
-    },
-    {
-      href: "/add",
-      label: "Add Title",
-      loggedIn: true,
-    },
-  ];
+  // const defaultRoutes = [
+  //   {
+  //     href: "/",
+  //     label: "Home",
+  //   },
+  //   {
+  //     href: "/add",
+  //     label: "Add Title",
+  //     loggedIn: true,
+  //   },
+  // ];
 
-  const routes = defaultRoutes.filter(
-    (route) => route.loggedIn === authCheck || route.loggedIn === undefined
-  );
+  // const routes = defaultRoutes.filter(
+  //   (route) => route.loggedIn === authCheck || route.loggedIn === undefined
+  // );
 
   return (
     <>

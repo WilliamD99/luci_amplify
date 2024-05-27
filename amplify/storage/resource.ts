@@ -8,5 +8,11 @@ export const storage = defineStorage({
       allow.guest.to(["read", "write"]),
       allow.entity("identity").to(["read", "write", "delete"]),
     ],
+    "room/{entity_id}/*": [
+      allow.authenticated.to(["read", "write"]),
+      allow.guest.to(["read", "write"]),
+      allow.entity("identity").to(["read", "write", "delete"]),
+    ],
+    "test/*": [allow.guest.to(["read", "write"])],
   }),
 });

@@ -1,0 +1,29 @@
+#profile {
+  height: 100%;
+
+  .inputs {
+    .input_container {
+      input {
+        width: 25rem;
+      }
+      .input_desc {
+        font-size: 0.75rem;
+      }
+    }
+  }
+  .profile_avatar {
+    .avatar {
+    }
+  }
+  .cta {
+    .save {
+      background-color: #148567;
+      opacity: 0.8;
+      transition: opacity 0.25s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

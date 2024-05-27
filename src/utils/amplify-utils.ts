@@ -6,6 +6,7 @@ import { getCurrentUser } from "aws-amplify/auth/server";
 import { generateServerClientUsingCookies } from "@aws-amplify/adapter-nextjs/data";
 import { Schema } from "../../amplify/data/resource";
 
+// Called from server only
 export const cookieBasedClient = generateServerClientUsingCookies<Schema>({
   config,
   cookies,
@@ -22,7 +23,7 @@ export const isAuthenticated = async () =>
     async operation(contextSpec) {
       try {
         const user = await getCurrentUser(contextSpec);
-        return user.userId;
+        return { id: user.userId, email: user.signInDetails?.loginId };
       } catch (e) {
         return false;
       }

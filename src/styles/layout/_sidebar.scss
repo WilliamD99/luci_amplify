@@ -14,6 +14,7 @@
   &--bot {
     display: flex;
     flex-direction: column;
+    align-items: center;
     row-gap: 12px;
   }
 
@@ -73,7 +74,7 @@
   &--bot {
     padding-bottom: 5px;
 
-    &__btn {
+    #create-popover__trigger {
       color: $white;
       display: flex;
       justify-content: center;
@@ -84,15 +85,74 @@
       height: 36px;
       transition: 0.15s ease;
 
+      .icon-wrapper {
+        transition: transform 0.2s ease-in-out;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
       &:hover {
-        transform: scale(1.15);
         color: white;
       }
+
+      &.active {
+        .icon-wrapper {
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    #user-popover__trigger {
+      width: 36px;
+      height: 36px;
     }
 
     &__avatar {
       width: 36px;
       height: 36px;
+    }
+  }
+}
+
+#create-popover {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+  button {
+    &:hover {
+      background-color: $gray_hovered;
+    }
+  }
+  .cta {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100%;
+    &.chat {
+      background-color: rgb(67, 19, 73);
+    }
+
+    &.room {
+      background-color: rgb(6, 50, 37);
+    }
+    &.user {
+      background-color: rgb(3, 49, 58);
+    }
+  }
+}
+
+#user-popover {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+  a,
+  .signout {
+    &:hover {
+      background-color: $gray_hovered;
     }
   }
 }

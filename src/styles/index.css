@@ -1,9 +1,6 @@
 .leftbar {
   display: flex;
   flex-direction: column;
-  padding-top: 8px;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .sidebar {
@@ -21,6 +18,7 @@
 .sidebar--top, .sidebar--bot {
   display: flex;
   flex-direction: column;
+  align-items: center;
   row-gap: 12px;
 }
 .sidebar--top__navs {
@@ -72,7 +70,7 @@
 .sidebar--bot {
   padding-bottom: 5px;
 }
-.sidebar--bot__btn {
+.sidebar--bot #create-popover__trigger {
   color: rgb(209, 210, 211);
   display: flex;
   justify-content: center;
@@ -83,13 +81,61 @@
   height: 36px;
   transition: 0.15s ease;
 }
-.sidebar--bot__btn:hover {
-  transform: scale(1.15);
+.sidebar--bot #create-popover__trigger .icon-wrapper {
+  transition: transform 0.2s ease-in-out;
+}
+.sidebar--bot #create-popover__trigger svg {
+  width: 20px;
+  height: 20px;
+}
+.sidebar--bot #create-popover__trigger:hover {
   color: white;
+}
+.sidebar--bot #create-popover__trigger.active .icon-wrapper {
+  transform: rotate(45deg);
+}
+.sidebar--bot #user-popover__trigger {
+  width: 36px;
+  height: 36px;
 }
 .sidebar--bot__avatar {
   width: 36px;
   height: 36px;
+}
+
+#create-popover {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+}
+#create-popover button:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#create-popover .cta {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 100%;
+}
+#create-popover .cta.chat {
+  background-color: rgb(67, 19, 73);
+}
+#create-popover .cta.room {
+  background-color: rgb(6, 50, 37);
+}
+#create-popover .cta.user {
+  background-color: rgb(3, 49, 58);
+}
+
+#user-popover {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+}
+#user-popover a:hover,
+#user-popover .signout:hover {
+  background-color: rgba(248, 248, 248, 0.25);
 }
 
 .top {
@@ -148,12 +194,188 @@
   overflow: hidden;
   box-shadow: none;
 }
+.app_workspace--layout__left {
+  padding-top: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.app_workspace--layout__right,
+.app_workspace--layout .resize-handler {
+  background-color: #1a1d21;
+}
+.app_workspace--layout__right {
+  display: flex;
+  flex-direction: row;
+}
+.app_workspace--layout .resize-handler {
+  position: absolute;
+  left: 0;
+  z-index: 50;
+}
 
 .resize-handler {
   border-left: 1px solid rgba(121, 124, 129, 0.3019607843);
 }
 
-p,
-a {
+#profile {
+  height: 100%;
+}
+#profile .inputs .input_container input {
+  width: 25rem;
+}
+#profile .inputs .input_container .input_desc {
+  font-size: 0.75rem;
+}
+#profile .cta .save {
+  background-color: #148567;
+  opacity: 0.8;
+  transition: opacity 0.25s ease;
+}
+#profile .cta .save:hover {
+  opacity: 1;
+}
+
+#room {
+  height: 100%;
+  width: 100%;
+  z-index: 51;
+}
+#room__header {
+  border-bottom: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#room__header .btn {
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#room__header .btn:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#room__text-editor {
+  padding: 10px 20px;
+}
+#room__text-editor .editor {
+  position: relative;
+}
+#room__text-editor .editor div {
+  height: 100%;
+  border-radius: 16px;
+}
+#room__text-editor .editor .tiptap {
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  border-radius: 16px;
+}
+#room__text-editor .editor .tiptap > :first-child {
+  padding-top: 5px;
+}
+#room__text-editor .editor .tiptap > * {
+  padding-left: 10px;
+}
+
+.modal > button {
+  color: white;
+}
+
+#md_create-room {
+  z-index: 1000;
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#md_create-room #md_create-room-form .input {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
   color: rgb(209, 210, 211);
+}
+#md_create-room #md_create-room-form .input .cmd_input:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+#md_create-room #md_create-room-form .input .cmd_item-wrapper:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#md_create-room #md_create-room-form .input .cmd_item-wrapper[aria-selected=true] {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#md_create-room #md_create-room-form .input .cmd_item {
+  color: rgb(209, 210, 211);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#md_add-user-room {
+  z-index: 1000;
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#md_add-user-room__modal {
+  z-index: 1001;
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#md_add-user-room__modal .cta {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#md_add-user-room .btn {
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#md_add-user-room .btn:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#md_add-user-room .input {
+  background-color: transparent;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+}
+#md_add-user-room .list .content {
+  transition: 0.3s ease;
+}
+#md_add-user-room .list .content:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+#md_add-user-room .list .content .add {
+  border: none;
+  background-color: rgb(67, 19, 73);
+}
+
+#notification_content {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+}
+#notification_content #activity_list .item .cta {
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  transition: 0.3s ease;
+}
+#notification_content #activity_list .item .cta:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+
+p,
+a,
+span {
+  color: rgb(209, 210, 211);
+}
+
+input:focus {
+  box-shadow: 0 0 0 1px rgb(29, 155, 209) !important;
+}
+
+.loader {
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.divider {
+  background-color: rgba(121, 124, 129, 0.3019607843);
 }/*# sourceMappingURL=index.css.map */

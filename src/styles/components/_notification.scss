@@ -1,0 +1,21 @@
+#notification_trigger {
+}
+
+#notification_content {
+  background-color: #1a1d21;
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  z-index: 1000;
+  position: relative;
+
+  #activity_list {
+    .item {
+      .cta {
+        border: 1px solid rgba(121, 124, 129, 0.3019607843);
+        transition: 0.3s ease;
+        &:hover {
+          background-color: $gray_hovered;
+        }
+      }
+    }
+  }
+}
