@@ -18,7 +18,7 @@ export const addNotification = async (
   type: string
 ) => {
   try {
-    if (cookieBasedClient.models.NotificationCenter) {
+    if (cookieBasedClient.models?.NotificationCenter) {
       let { data, errors } =
         await cookieBasedClient.models.NotificationCenter.create({
           table: table,
