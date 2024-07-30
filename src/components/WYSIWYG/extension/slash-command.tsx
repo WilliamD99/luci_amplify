@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { createSuggestionItems } from "novel/extensions";
 import { Command, renderItems } from "novel/extensions";
-import { uploadFn } from "./image-upload";
+// import { uploadFnWrappezr } from "./image-upload";
 
 export const suggestionItems = createSuggestionItems([
   {
@@ -118,7 +118,7 @@ export const suggestionItems = createSuggestionItems([
         if (input.files?.length) {
           const file = input.files[0];
           const pos = editor.view.state.selection.from;
-          uploadFn(file, editor.view, pos);
+          // uploadFn(file, editor.view, pos);
         }
       };
       input.click();

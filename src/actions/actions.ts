@@ -1,9 +1,9 @@
 "use server";
 
 import { cookieBasedClient } from "@/utils/amplify-utils";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { Schema } from "../../amplify/data/resource";
+// import { revalidatePath } from "next/cache";
+// import { redirect } from "next/navigation";
+// import { Schema } from "../../amplify/data/resource";
 
 import type { ModelNames } from "@/utils/type.amplify";
 
