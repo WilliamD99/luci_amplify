@@ -19,15 +19,15 @@ export const addNotification = async (
 ) => {
   try {
     if ((cookieBasedClient.models as any)?.NotificationCenter) {
-      let { data, errors } =
-        await cookieBasedClient.models.NotificationCenter.create({
-          table: table,
-          from,
-          idSource: source,
-          target,
-          type,
-          status: "unread",
-        });
+      // let { data, errors } =
+      //   await cookieBasedClient.models.NotificationCenter.create({
+      //     table: table,
+      //     from,
+      //     idSource: source,
+      //     target,
+      //     type,
+      //     status: "unread",
+      //   });
       return;
     }
   } catch (e) {
