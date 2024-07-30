@@ -22,23 +22,26 @@ export async function updateUserProfile(formData: FormData) {
       ...rawFormData,
     });
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 }
 
 export async function updateUserAvatar(userId: string, path: string) {
   if (!userId || !path) return;
-  let { errors } = await cookieBasedClient.models.User.update({
+  let { errors, data } = await cookieBasedClient.models.User.update({
     id: userId,
     avatar: path,
   });
-  if (errors) return false;
-  else return true;
+  console.log(data, "update");
+  if (errors) {
+    console.log(errors);
+    return false;
+  } else return true;
 }
 
 export async function addFriendAction(
   formData: FormData
-): Promise<{ message: string } | Schema["UserRelationships"]["type"]> {
+): Promise<{ message: string } | Schema["UserRelationships"]["type"] | null> {
   let currentUserData = await isAuthenticated();
   if (!currentUserData)
     return {
@@ -46,11 +49,19 @@ export async function addFriendAction(
     };
 
   let userId = currentUserData.id;
+  let userEmail = currentUserData.email;
 
   let user2_email = formData.get("email")?.toString();
   if (!user2_email) {
     return {
       message: "Please provide email",
+    };
+  }
+
+  // Check if its yours email
+  if (userEmail === user2_email) {
+    return {
+      message: "Can't send request to your self",
     };
   }
 
@@ -122,9 +133,8 @@ export async function addFriendAction(
     user1_id: userId,
     user2_id: targetFriendData[0].id,
   });
-
+  console.log(relationshipError);
   if (!relationshipData) {
-    console.log(relationshipError);
     return {
       message: "Something went wrong",
     };
@@ -136,7 +146,8 @@ export async function addFriendAction(
     targetFriendData[0].id,
     "Friend Request"
   );
-  return relationshipData;
+  // return relationshipData;
+  return null;
 }
 
 // Change the status of the UserRelationships record (accepted or rejected)
@@ -145,7 +156,7 @@ export async function confirmFriendRequestAction(
   id: string,
   status: boolean,
   sourceId?: string
-) {
+): Promise<{ message: string } | Schema["UserRelationships"]["type"] | null> {
   let { data, errors } =
     await cookieBasedClient.models.UserRelationships.update({
       id,
@@ -165,6 +176,10 @@ export async function confirmFriendRequestAction(
       status: "read",
     });
   }
-  console.log(data);
-  return data;
+  if (!data)
+    return {
+      message: "Something went wrong, please contact support.",
+    };
+
+  return null;
 }

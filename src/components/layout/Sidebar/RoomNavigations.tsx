@@ -29,7 +29,7 @@ export default function RoomNavigations({ rooms }: { rooms: any }) {
   return (
     <>
       <div className="sidebar--top__navs">
-        {rooms.map((room: any) => (
+        {/* {rooms.map((room: any) => (
           <button
             key={room.room?.id}
             className="btn"
@@ -41,7 +41,7 @@ export default function RoomNavigations({ rooms }: { rooms: any }) {
               </AvatarFallback>
             </Avatar>
           </button>
-        ))}
+        ))} */}
       </div>
     </>
   );

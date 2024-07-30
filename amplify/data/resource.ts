@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { postConfirmation } from "../auth/post-confirmation/resource";
+import { addIssueToContext } from "zod";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -35,6 +36,8 @@ const schema = a.schema({
       updatedAt: a.string(),
       rooms: a.hasMany("UserRoom", "userId"),
       notifications: a.hasMany("NotificationCenter", "from"),
+      relationship1: a.hasMany("UserRelationships", "user1_id"),
+      relationship2: a.hasMany("UserRelationships", "user2_id"),
     })
     .secondaryIndexes((index) => [index("email"), index("username")])
     .authorization((a) => [
@@ -44,11 +47,14 @@ const schema = a.schema({
   UserRelationships: a
     .model({
       user1_id: a.id().required(),
+      user1: a.belongsTo("User", "user1_id"),
       user2_id: a.id().required(),
+      user2: a.belongsTo("User", "user2_id"),
       status: a.string().default("pending"), // pending || accepted || rejected
+      messages: a.hasMany("ChatMessage", "relationshipId"),
     })
     .secondaryIndexes((index) => [index("user1_id"), index("user2_id")])
-    .authorization((allow) => [allow.owner(), allow.authenticated()]),
+    .authorization((allow) => [allow.authenticated()]),
   Room: a
     .model({
       name: a.string().required(),
@@ -66,16 +72,40 @@ const schema = a.schema({
       room: a.belongsTo("Room", "roomId"),
     })
     .authorization((a) => [a.authenticated()]),
+  ChatMessage: a
+    .model({
+      createdAt: a.string().required(),
+      updatedAt: a.string(),
+      content: a.string().required(),
+      identifier: a.string().required(),
+      receiver: a.string().required(),
+      relationshipId: a.id().required(),
+      relationshipSource: a.belongsTo("UserRelationships", "relationshipId"),
+      files: a.string(),
+    })
+    .authorization((a) => [
+      a.ownerDefinedIn("identifier"),
+      a.ownerDefinedIn("receiver"),
+    ])
+    .secondaryIndexes((index) => [
+      index("relationshipId").name("ChatMessageByDate").sortKeys(["createdAt"]),
+    ]),
   Message: a.customType({
     content: a.string().required(),
-    channelName: a.string().required(),
+    identifier: a.string().required(),
+    receiver: a.string().required(),
+    files: a.string(),
   }),
   // Message publish mutation
   publish: a
     .mutation()
     .arguments({
-      channelName: a.string().required(),
       content: a.string().required(),
+      identifier: a.string().required(), // id of the sender
+      receiver: a.string().required(),
+      files: a.string(),
+      // from: a.string(), // id of the sender,
+      // type: a.string(), // single or multiple
     })
     .returns(a.ref("Message"))
     .handler(a.handler.custom({ entry: "./publish.js" }))
@@ -86,6 +116,12 @@ const schema = a.schema({
     .subscription()
     // subscribes to the 'publish' mutation
     .for(a.ref("publish"))
+    .arguments({
+      identifier: a.string(), // id of the receiver
+      receiver: a.string(),
+      // from: a.string(), // id of the sender,
+      // type: a.string(), // single or multiple
+    })
     // subscription handler to set custom filters
     .handler(a.handler.custom({ entry: "./receive.js" }))
     // authorization rules as to who can subscribe to the data

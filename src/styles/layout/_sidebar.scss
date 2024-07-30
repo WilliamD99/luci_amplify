@@ -54,6 +54,15 @@
             }
           }
         }
+
+        &.active {
+          .menu_icon {
+            background-color: rgba(248, 248, 248, 0.25);
+            .icon {
+              transform: scale(1.15);
+            }
+          }
+        }
       }
     }
 

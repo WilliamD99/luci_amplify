@@ -8,7 +8,7 @@ import {
   StarterKit,
   TaskItem,
   TaskList,
-  TiptapImage,
+  // TiptapImage,
   TiptapLink,
   UpdatedImage,
   Youtube,
@@ -17,7 +17,44 @@ import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
+import { Node, mergeAttributes } from "@tiptap/core";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import StorageImageWrapper from "../components/StorageImageWrapper";
 
+const TiptapImage = Node.create({
+  name: "image",
+  group: "inline",
+  inline: true,
+  draggable: true,
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "img[src]",
+      },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["img", mergeAttributes({ class: "inline-block" }, HTMLAttributes)];
+    // return ["span", {}, ""];
+  },
+  addNodeView() {
+    return ReactNodeViewRenderer(StorageImageWrapper);
+  },
+  addProseMirrorPlugins() {
+    return [
+      UploadImagesPlugin({
+        imageClass: "opacity-40 rounded-lg border border-stone-200",
+      }),
+    ];
+  },
+});
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
 //You can overwrite the placeholder with your own configuration
@@ -30,20 +67,22 @@ const tiptapLink = TiptapLink.configure({
   },
 });
 
-const tiptapImage = TiptapImage.extend({
-  addProseMirrorPlugins() {
-    return [
-      UploadImagesPlugin({
-        imageClass: cx("opacity-40 rounded-lg border border-stone-200"),
-      }),
-    ];
-  },
-}).configure({
-  allowBase64: true,
-  HTMLAttributes: {
-    class: cx("rounded-lg border border-muted"),
-  },
-});
+// const tiptapImage = TiptapImage.extend({
+//   addProseMirrorPlugins() {
+//     return [
+//       UploadImagesPlugin({
+//         imageClass: cx(
+//           "opacity-40 test h-36 w-36 rounded-lg border border-stone-200"
+//         ),
+//       }),
+//     ];
+//   },
+// }).configure({
+//   allowBase64: true,
+//   HTMLAttributes: {
+//     class: cx("rounded-lg h-36 w-36 border border-muted"),
+//   },
+// });
 
 const updatedImage = UpdatedImage.configure({
   HTMLAttributes: {
@@ -130,7 +169,7 @@ export const defaultExtensions = [
   starterKit,
   placeholder,
   tiptapLink,
-  tiptapImage,
+  // tiptapImage,
   updatedImage,
   taskList,
   taskItem,
@@ -140,4 +179,5 @@ export const defaultExtensions = [
   youtube,
   characterCount,
   GlobalDragHandle,
+  TiptapImage,
 ];

@@ -23,7 +23,14 @@ import AvatarUpload from "./AvatarUpload";
 export default function ProfileClient({
   userData,
 }: {
-  userData: Schema["User"]["type"];
+  userData: {
+    id: string;
+    avatar?: string | null;
+    email: string;
+    username?: string | null;
+    title?: string | null;
+    fullname?: string | null;
+  };
 }) {
   const [input, setInput] = useState(userData);
 

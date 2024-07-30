@@ -1,4 +1,16 @@
 .leftbar {
-  display: flex;
-  flex-direction: column;
+  .dms_content {
+    .dms_search {
+      background-color: transparent;
+      border: 1px solid #797c814d;
+      color: rgb(209, 210, 211);
+    }
+    .dms_friendlist {
+      &--item {
+        &:hover {
+          background-color: $gray_hovered;
+        }
+      }
+    }
+  }
 }

@@ -95,7 +95,7 @@ const AddUserActionModal = ({ children }: { children: React.ReactNode }) => {
   const handleSearch = debounce(async (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     let { data } = await databaseClient.models.UserRelationships.list({
-      selectionSet: ["user2_id"],
+      selectionSet: ["id"],
     });
     console.log(data);
   }, 500);

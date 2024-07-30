@@ -17,7 +17,6 @@ export const addNotification = async (
   target: string,
   type: string
 ) => {
-  console.log(table);
   let { data, errors } =
     await cookieBasedClient.models.NotificationCenter.create({
       table: table,
@@ -27,6 +26,5 @@ export const addNotification = async (
       type,
       status: "unread",
     });
-  console.log(data, errors);
   return;
 };

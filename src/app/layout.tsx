@@ -12,10 +12,8 @@ import SideBar from "@/components/layout/Sidebar/index";
 
 import PanelLayout from "@/components/layout/PanelLayout";
 import { cookies } from "next/headers";
-import LeftBar from "@/components/layout/LeftBar";
-import { Toaster } from "@/components/ui/toaster";
+import LeftBar from "@/components/layout/LeftBar/index";
 import AuthClient from "@/components/auth/AuthClient";
-import Notification from "@/components/Notification";
 
 const inter = Inter({ subsets: ["latin"] });
 

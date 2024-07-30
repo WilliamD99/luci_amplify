@@ -33,7 +33,7 @@ Amplify.configure(
 );
 
 const client = generateClient<Schema>({
-  authMode: "iam",
+  authMode: "userPool",
 });
 
 export const handler: PostConfirmationTriggerHandler = async (event) => {

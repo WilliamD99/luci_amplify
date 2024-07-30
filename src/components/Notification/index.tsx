@@ -26,7 +26,7 @@ export interface ActivityListProps {
   data: ActivityListResult[];
 }
 
-export default function Notification({ userId }: { userId: string }) {
+export default function Notification() {
   let [notifications, setNotifications] = useState<ActivityListProps["data"]>(
     []
   );
@@ -100,7 +100,9 @@ export default function Notification({ userId }: { userId: string }) {
               <p className="font-medium leading-none">Activity</p>
             </div>
             <span className="h-[1px] border-t-[1px] border-gray-600" />
-            {notifications && <ActivityList list={notifications} />}
+            {notifications && (
+              <ActivityList list={notifications} setList={setNotifications} />
+            )}
           </div>
         </PopoverContent>
       </Popover>

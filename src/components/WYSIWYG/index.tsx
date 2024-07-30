@@ -1,44 +1,47 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-  EditorBubble,
-  EditorBubbleItem,
-  EditorCommand,
-  EditorCommandItem,
-  EditorContent,
-  EditorRoot,
-  JSONContent,
-} from "novel";
-import { defaultEditorContent } from "./defaultContent";
-import { defaultExtensions } from "./extension";
+import React, { useState, createContext } from "react";
+import { EditorRoot } from "novel";
+import Form from "./components/Form";
+import ImageZoomModal from "../modals/ImageZoomModal";
 
-const extensions = [...defaultExtensions];
+interface ZoomModalType {
+  openZoomModal: boolean;
+  setOpenZoomModal: Function;
+  src: string | null;
+  setSrc: Function;
+}
+
+export const ZoomModalContext = createContext<ZoomModalType>({
+  openZoomModal: false,
+  setOpenZoomModal: () => null,
+  src: null,
+  setSrc: () => null,
+});
 
 export default function WYSIWYG() {
-  const [initialContent, setInitialContent] = useState<
-    undefined | JSONContent
-  >();
-
-  useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent(defaultEditorContent);
-  }, []);
+  const [openZoomModal, setOpenZoomModal] = useState<boolean>(false);
+  const [zoomModalSrc, setZoomModalSrc] = useState<string | null>(null);
 
   return (
     <>
       <EditorRoot>
-        <EditorContent
-          className="h-full editor"
-          initialContent={initialContent}
-          extensions={extensions}
-          onUpdate={({ editor }) => {
-            const json = editor.getJSON();
-            setInitialContent(json);
+        <ZoomModalContext.Provider
+          value={{
+            openZoomModal,
+            setOpenZoomModal,
+            src: zoomModalSrc,
+            setSrc: setZoomModalSrc,
           }}
-        ></EditorContent>
+        >
+          <Form />
+        </ZoomModalContext.Provider>
       </EditorRoot>
+      <ImageZoomModal
+        open={openZoomModal}
+        setOpen={setOpenZoomModal}
+        src={zoomModalSrc}
+      />
     </>
   );
 }

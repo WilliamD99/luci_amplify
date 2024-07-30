@@ -5,6 +5,10 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  reactStrictMode: false,
+  images: {
+    domains: ["picsum.photos"],
+  },
 };
 
 export default nextConfig;

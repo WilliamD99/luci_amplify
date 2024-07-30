@@ -21,12 +21,12 @@ export default function UserSelect() {
     Schema["User"]["type"][]
   >([]);
 
-  useEffect(() => {
-    databaseClient.models.User.list().then((res) => {
-      console.log(res.data);
-      setAvlbMembers(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   databaseClient.models.User.list().then((res) => {
+  //     console.log(res.data);
+  //     setAvlbMembers(res.data);
+  //   });
+  // }, []);
 
   const handleSelectMember = (user: Schema["User"]["type"]) => {
     console.log(user);

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 import {
   PlusIcon,
@@ -18,9 +19,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import CreateRoomModal from "@/components/modals/CreateRoomModal";
+// import CreateRoomModal from "@/components/modals/CreateRoomModal";
+
+const CreateRoomModal = dynamic(
+  () => import("@/components/modals/CreateRoomModal"),
+  {
+    ssr: false,
+  }
+);
+
 import AddFriendModal from "@/components/modals/AddFriendModal";
 import { toast } from "@/components/ui/use-toast";
+import { TabsList } from "@/components/ui/tabs";
 
 export default function SideBarClient({
   userData,

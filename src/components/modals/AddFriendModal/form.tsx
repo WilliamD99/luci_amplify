@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button, SubmitBtn } from "@/components/ui/button";
 import { addFriendAction } from "@/actions/userdata-action";
-import { toast } from "@/components/ui/use-toast";
 
 export default function AddFriendForm() {
   const form = useForm<z.infer<typeof formAddFriendSchema>>({
@@ -21,18 +20,18 @@ export default function AddFriendForm() {
 
   const handleAddFriendAction = async (e: FormData) => {
     let data = await addFriendAction(e);
-
-    if ("message" in data) {
-      toast({
-        title: "Error",
-        description: data.message,
-      });
-    } else {
-      toast({
-        title: "Friend request sent",
-        description: "We'll let you know when this user accepted your request.",
-      });
-    }
+    console.log(data);
+    // if ("message" in data) {
+    //   toast({
+    //     title: "Error",
+    //     description: data.message,
+    //   });
+    // } else {
+    //   toast({
+    //     title: "Friend request sent",
+    //     description: "We'll let you know when this user accepted your request.",
+    //   });
+    // }
   };
 
   return (

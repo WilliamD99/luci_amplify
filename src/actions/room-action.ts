@@ -4,12 +4,12 @@ import { cookieBasedClient, isAuthenticated } from "@/utils/amplify-utils";
 import { formCreateRoomSchema } from "@/utils/form-schema";
 
 export const createRoomAction = async (formData: FormData) => {
-  let userId = await isAuthenticated();
-  if (!userId)
+  let userData = await isAuthenticated();
+  if (!userData)
     return {
       error: "Unauthenticated",
     };
-
+  let userId = userData.id;
   // Validate form fields here
   // let validateFormFields = formCreateRoomSchema.safeParse({
   //   name: formData.get("name"),
@@ -35,11 +35,7 @@ export const createRoomAction = async (formData: FormData) => {
         userId,
         roomId: data?.id ?? "",
       });
-
-    console.log(errors, userRoomErrors);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
   return {
     message: "Done",
   };

@@ -38,7 +38,7 @@ export default function AvatarUpload({
       }).result;
       if (result) {
         setImagePath(`avatar/${userId}/${e.target.files[0].name}`);
-
+        console.log(userId);
         let updateUserRes = await updateUserAvatar(
           userId,
           `avatar/${userId}/${e.target.files[0].name}`
