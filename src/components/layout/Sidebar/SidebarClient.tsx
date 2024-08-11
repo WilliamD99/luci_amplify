@@ -36,8 +36,8 @@ export default function SideBarClient({
   userData,
   rooms,
 }: {
-  userData?: Schema["User"]["type"] | null;
-  rooms?: Schema["UserRoom"]["type"] | null;
+  userData?: any;
+  rooms?: any;
 }) {
   const [open, setOpen] = useState<boolean>(false);
 
