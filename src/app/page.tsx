@@ -1,4 +1,3 @@
-import Post from "@/components/Post";
 import UploadFile from "@/components/UploadFile";
 import { cookieBasedClient, isAuthenticated } from "@/utils/amplify-utils";
 import PageClient from "./client";
