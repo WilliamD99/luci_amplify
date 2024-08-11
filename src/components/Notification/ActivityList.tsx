@@ -21,6 +21,7 @@ export default function ActivityList({
   ) => {
     setLoading(true);
     let data = await confirmFriendRequestAction(id, status, sourceId);
+    if (!data) return;
 
     if ("message" in data) {
       toast({
