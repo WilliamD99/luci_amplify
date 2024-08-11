@@ -16,7 +16,6 @@ export default async function RoomPage({
   // let id = params.id;
   // let room = await getRoom(id);
   // console.log(room);
-  console.log(userData, "test");
   return (
     <>
       <RoomClient user={userData} />
