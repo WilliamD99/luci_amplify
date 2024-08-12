@@ -36,7 +36,7 @@ export default function SideBarClient({
   userData,
   rooms,
 }: {
-  userData?: any;
+  userData?: any; // Need worked on
   rooms?: any;
 }) {
   const [open, setOpen] = useState<boolean>(false);

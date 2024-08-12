@@ -421,6 +421,44 @@
   border-left: 1px solid rgba(121, 124, 129, 0.3019607843);
 }
 
+#login {
+  height: 100vh;
+}
+#login .amplify-tabs {
+  background-color: black;
+}
+#login .amplify-tabs .amplify-tabs__list {
+  border-bottom: 1px solid black;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow: hidden;
+}
+#login .amplify-tabs .amplify-tabs__list .amplify-tabs__item {
+  color: gray;
+  opacity: 0.8;
+}
+#login .amplify-tabs .amplify-tabs__list .amplify-tabs__item.amplify-tabs__item--active {
+  color: black !important;
+  opacity: 1;
+}
+#login .amplify-tabs .amplify-tabs__list.amplify-tabs__list--top {
+  --internal-item-border-width: 0px !important;
+}
+#login .amplify-tabs .amplify-tabs__panel {
+  padding-block: 0px !important;
+}
+#login .amplify-tabs .amplify-button--link {
+  --amplify-internal-button-color: black !important;
+}
+#login button[type=submit],
+#login .amplify-button--primary {
+  --amplify-internal-button-background-color: black !important;
+  background-color: black !important;
+}
+#login .amplify-button:hover {
+  background-color: rgba(248, 248, 248, 0.25);
+}
+
 #profile {
   height: 100%;
   padding: 2rem;

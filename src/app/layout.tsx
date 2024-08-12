@@ -39,20 +39,23 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className="app_background">
           <Auth>
-            <NavBar />
             {userData ? (
-              <main className="app_main">
-                <SideBar />
-                <div className="app_workspace">
-                  <div className="app_workspace--layout">
-                    <PanelLayout defaultLayout={defaultLayout}>
-                      <LeftBar />
-                      {children}
-                    </PanelLayout>
+              <>
+                <NavBar />
+
+                <main className="app_main">
+                  <SideBar />
+                  <div className="app_workspace">
+                    <div className="app_workspace--layout">
+                      <PanelLayout defaultLayout={defaultLayout}>
+                        <LeftBar />
+                        {children}
+                      </PanelLayout>
+                    </div>
+                    <div className="app_workspace--banner"></div>
                   </div>
-                  <div className="app_workspace--banner"></div>
-                </div>
-              </main>
+                </main>
+              </>
             ) : (
               <AuthClient />
             )}

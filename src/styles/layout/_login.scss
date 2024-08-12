@@ -1,0 +1,47 @@
+#login {
+  height: calc(100vh);
+  .amplify-tabs {
+    background-color: black;
+
+    .amplify-tabs__list {
+      border-bottom: 1px solid black;
+      border-top-left-radius: 2rem;
+      border-top-right-radius: 2rem;
+      overflow: hidden;
+
+      .amplify-tabs__item {
+        color: gray;
+        opacity: 0.8;
+        &.amplify-tabs__item--active {
+          color: black !important;
+          opacity: 1;
+        }
+      }
+
+      &.amplify-tabs__list--top {
+        --internal-item-border-width: 0px !important;
+      }
+      #signIn-tab,
+      #signUp-tab {
+      }
+    }
+    .amplify-tabs__panel {
+      padding-block: 0px !important;
+    }
+
+    .amplify-button--link {
+      --amplify-internal-button-color: black !important;
+    }
+  }
+  button[type="submit"],
+  .amplify-button--primary {
+    --amplify-internal-button-background-color: black !important;
+    background-color: black !important;
+  }
+
+  .amplify-button {
+    &:hover {
+      background-color: $gray_hovered;
+    }
+  }
+}
