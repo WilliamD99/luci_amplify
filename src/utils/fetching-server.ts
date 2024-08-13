@@ -49,6 +49,7 @@ export const getUserById = cache(async (userId: string) => {
       ],
     }
   );
+  console.log(data, "hello");
   return data.data;
 });
 

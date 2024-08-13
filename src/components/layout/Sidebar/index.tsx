@@ -8,6 +8,7 @@ export default async function SideBar({}) {
     userData = null,
     rooms = null;
   loginData = await isAuthenticated();
+  console.log(loginData, "this is me");
   // if (!userId) return <></>;
   if (typeof loginData === "object") {
     userData = await getUserById(loginData.id);

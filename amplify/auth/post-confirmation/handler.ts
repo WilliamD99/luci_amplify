@@ -44,6 +44,7 @@ export const handler: PostConfirmationTriggerHandler = async (event) => {
     query: createUser,
     variables: {
       input: {
+        id: event.request.userAttributes.sub,
         email: event.request.userAttributes.email,
         createdAt: timestamp,
         updatedAt: timestamp,

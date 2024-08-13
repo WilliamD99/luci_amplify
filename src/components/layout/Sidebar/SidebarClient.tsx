@@ -44,7 +44,7 @@ export default function SideBarClient({
   const handleOpenChange = (e: boolean) => {
     setOpen(e);
   };
-
+  console.log(userData);
   return (
     <>
       <div className="sidebar">
