@@ -197,15 +197,16 @@ const formFields = {
   },
 };
 
-export default function AuthClient() {
+export default function AuthClient({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
-      <div
-        id="login"
-        className="w-full relative flex items-center justify-center"
-      >
-        <Authenticator formFields={formFields} components={components} />
-      </div>
+      <Authenticator formFields={formFields} components={components}>
+        {children}
+      </Authenticator>
     </>
   );
 }

@@ -43,7 +43,6 @@ export const uploadFnWrapper = (
     try {
       uploadFnWithAdditionalData(files[i], view, pos);
     } catch (e) {
-      console.log(e);
       return false;
     }
   }

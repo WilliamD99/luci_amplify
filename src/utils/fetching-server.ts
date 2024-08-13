@@ -3,13 +3,7 @@ import { cookieBasedClient, isAuthenticated } from "./amplify-utils";
 import { FriendListType } from "@/components/layout/LeftBar";
 
 // Room
-export const getRoomList = cache(async () => {
-  // let data = await cookieBasedClient.models.UserRoom.list({
-  //   selectionSet: ["room.name", "room.id", "room.users.createdAt"],
-  // });
-  // console.log(data);
-  // return data.data;
-});
+export const getRoomList = cache(async () => {});
 
 export const getRoom = cache(async (id: string) => {
   let data = await cookieBasedClient.models.Room.get(
@@ -49,7 +43,6 @@ export const getUserById = cache(async (userId: string) => {
       ],
     }
   );
-  console.log(data, "hello");
   return data.data;
 });
 
@@ -79,7 +72,6 @@ export const getRelationship = async (id1: string, id2: string) => {
       selectionSet: ["id", "messages.*"],
       authMode: "userPool",
     });
-    console.log(data);
     if (data.length === 0) return false;
 
     return data[0];
@@ -140,7 +132,6 @@ export const getFriendListServer = async () => {
           ],
         }
       );
-    console.log(errors);
     friendList1 = friendlist1Data.map((item) => {
       return {
         createdAt: item.createdAt,

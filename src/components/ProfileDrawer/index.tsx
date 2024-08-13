@@ -23,13 +23,6 @@ export default function ProfileDrawer() {
 
   const handleClose = (e: any) => {
     setOpen(e);
-    console.log(e);
-    // const current = new URLSearchParams(Array.from(searchParams.entries()));
-    // current.delete("profile");
-    // console.log(current);
-    // const search = current.toString();
-    // const query = search ? `?${search}` : "";
-    // router.push(`${pathName}${query}`);
   };
 
   return (

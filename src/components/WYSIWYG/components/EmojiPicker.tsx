@@ -15,7 +15,6 @@ export default function EmojiPicker({
   const { editor } = useEditor();
 
   const handleAddEmoji = (e: any) => {
-    console.log(e);
     editor?.chain().insertContent(e.native).run();
     setOpen(false);
   };

@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Note
 
-This project is still under development, so you might get an error message when trying to register.
+This project is still under development, so you might get an error message when using the app.
 
 ## Getting Started
 

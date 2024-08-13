@@ -21,7 +21,7 @@ export default function PanelLayout({
 
   return (
     <>
-      <Tabs className="h-full w-full" id="test" value={tabOption}>
+      <Tabs className="h-full w-full" value={tabOption}>
         <PanelGroup direction="horizontal" onLayout={onLayout}>
           <Panel
             className="app_workspace--layout__left"

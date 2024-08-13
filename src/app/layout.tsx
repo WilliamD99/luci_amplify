@@ -7,7 +7,6 @@ import "@aws-amplify/ui-react-storage/styles.css";
 
 import Auth from "@/components/auth/Auth";
 import NavBar from "@/components/layout/NavBar";
-import { isAuthenticated } from "@/utils/amplify-utils";
 import SideBar from "@/components/layout/Sidebar/index";
 
 import PanelLayout from "@/components/layout/PanelLayout";
@@ -27,8 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let userData = await isAuthenticated();
-
   // For panel layout, get setting from the storage
   const layout = cookies().get("panel-layout");
   let defaultLayout;
@@ -39,26 +36,22 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className="app_background">
           <Auth>
-            {userData ? (
-              <>
-                <NavBar />
+            <AuthClient>
+              <NavBar />
 
-                <main className="app_main">
-                  <SideBar />
-                  <div className="app_workspace">
-                    <div className="app_workspace--layout">
-                      <PanelLayout defaultLayout={defaultLayout}>
-                        <LeftBar />
-                        {children}
-                      </PanelLayout>
-                    </div>
-                    <div className="app_workspace--banner"></div>
+              <main className="app_main">
+                <SideBar />
+                <div className="app_workspace">
+                  <div className="app_workspace--layout">
+                    <PanelLayout defaultLayout={defaultLayout}>
+                      <LeftBar />
+                      {children}
+                    </PanelLayout>
                   </div>
-                </main>
-              </>
-            ) : (
-              <AuthClient />
-            )}
+                  <div className="app_workspace--banner"></div>
+                </div>
+              </main>
+            </AuthClient>
           </Auth>
         </div>
       </body>

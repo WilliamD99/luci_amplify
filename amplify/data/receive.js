@@ -13,6 +13,5 @@ export const response = (ctx) => {
   };
 
   extensions.setSubscriptionFilter(util.transform.toSubscriptionFilter(filter));
-  console.log(userId);
   return null;
 };

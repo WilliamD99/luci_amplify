@@ -58,7 +58,6 @@ function ChatRenderer(
       })
       .subscribe({
         next: (e: any) => {
-          console.log(e);
           handleReceivingMsg(e);
         },
         error: (e) => console.log(e),
@@ -83,7 +82,7 @@ function ChatRenderer(
 let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
   const eleRef = useRef<HTMLDivElement>(null);
   const { sender, receiver }: any = useContext(UserDataContext);
-  console.log(sender.avatar, receiver.avatar);
+
   return (
     <div ref={eleRef} className="h-full w-full">
       <div className="flex justify-center items-center chatbox--group">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
 import {
@@ -12,7 +12,6 @@ import {
 import SidebarAvatar from "./SidebarAvatar";
 import RoomNavigations from "./RoomNavigations";
 import MenuNavigations from "./MenuNavigations";
-import { Schema } from "../../../../amplify/data/resource";
 import {
   Popover,
   PopoverContent,
@@ -29,9 +28,10 @@ const CreateRoomModal = dynamic(
 );
 
 import AddFriendModal from "@/components/modals/AddFriendModal";
-import { toast } from "@/components/ui/use-toast";
-import { TabsList } from "@/components/ui/tabs";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
+// Might have to fetch user data on client side
+// Because loading user data server side wont work when user go from login page -> app
 export default function SideBarClient({
   userData,
   rooms,
@@ -40,11 +40,12 @@ export default function SideBarClient({
   rooms?: any;
 }) {
   const [open, setOpen] = useState<boolean>(false);
+  const { user } = useAuthenticator((context) => [context.user]);
 
   const handleOpenChange = (e: boolean) => {
     setOpen(e);
   };
-  console.log(userData);
+
   return (
     <>
       <div className="sidebar">

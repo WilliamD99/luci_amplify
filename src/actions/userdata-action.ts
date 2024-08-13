@@ -32,10 +32,8 @@ export async function updateUserAvatar(userId: string, path: string) {
     id: userId,
     avatar: path,
   });
-  console.log(data, "update");
   if (errors) {
-    console.log(errors);
-    return false;
+    return errors;
   } else return true;
 }
 
