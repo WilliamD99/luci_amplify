@@ -10,7 +10,7 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
 import SidebarAvatar from "./SidebarAvatar";
-import RoomNavigations from "./RoomNavigations";
+// import RoomNavigations from "./RoomNavigations";
 import MenuNavigations from "./MenuNavigations";
 import {
   Popover,
@@ -18,29 +18,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-// import CreateRoomModal from "@/components/modals/CreateRoomModal";
-
-const CreateRoomModal = dynamic(
-  () => import("@/components/modals/CreateRoomModal"),
-  {
-    ssr: false,
-  }
-);
-
+import CreateRoomModal from "@/components/modals/CreateRoomModal";
 import AddFriendModal from "@/components/modals/AddFriendModal";
-import { useAuthenticator } from "@aws-amplify/ui-react";
+
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUserData } from "@/utils/amplify-utils.client";
+import { Schema } from "../../../../amplify/data/resource";
 
 // Might have to fetch user data on client side
 // Because loading user data server side wont work when user go from login page -> app
-export default function SideBarClient({
-  userData,
-  rooms,
-}: {
-  userData?: any; // Need worked on
-  rooms?: any;
-}) {
+export default function SideBarClient() {
   const [open, setOpen] = useState<boolean>(false);
-  const { user } = useAuthenticator((context) => [context.user]);
+  const { data } = useQuery<Schema["User"]["type"] | null>({
+    queryKey: ["Current User"],
+    queryFn: () => getCurrentUserData(),
+  });
 
   const handleOpenChange = (e: boolean) => {
     setOpen(e);
@@ -51,9 +43,9 @@ export default function SideBarClient({
       <div className="sidebar">
         <div className="sidebar--top">
           {/* Room btns */}
-          <RoomNavigations rooms={rooms} />
+          {/* <RoomNavigations rooms={rooms} /> */}
           {/* Utils btns */}
-          <MenuNavigations id={userData?.id} />
+          <MenuNavigations id={data?.id} />
         </div>
         <div className="sidebar--bot">
           <Popover open={open} onOpenChange={handleOpenChange}>
@@ -123,7 +115,7 @@ export default function SideBarClient({
               </div>
             </PopoverContent>
           </Popover>
-          {userData && <SidebarAvatar userData={userData} />}
+          <SidebarAvatar userData={data} />
         </div>
       </div>
     </>

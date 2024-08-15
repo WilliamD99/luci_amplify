@@ -1,27 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Avatar, AvatarFallback } from "../../ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Schema } from "../../../../amplify/data/resource";
-
 import { StorageImage } from "@aws-amplify/ui-react-storage";
-import {
-  PlusIcon,
-  ChatBubbleLeftEllipsisIcon,
-  ChatBubbleLeftRightIcon,
-} from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
-import { Divider } from "@aws-amplify/ui-react";
+import { Schema } from "../../../../amplify/data/resource";
 import { signOut } from "aws-amplify/auth";
 
 export default function SidebarAvatar({
   userData,
 }: {
-  userData: Schema["User"]["type"];
+  userData?: Schema["User"]["type"] | null;
 }) {
-  const [open, setOpen] = useState<boolean>(false);
-
   const handleSignout = async () => {
     await signOut();
   };
@@ -29,10 +20,10 @@ export default function SidebarAvatar({
   return (
     <>
       <Popover>
-        <PopoverTrigger id="user-popover__trigger" asChild>
+        <PopoverTrigger disabled={!userData} id="user-popover__trigger" asChild>
           <Button className="bg-transparent">
             <Avatar className="sidebar--bot__avatar">
-              {userData.avatar ? (
+              {userData?.avatar ? (
                 <StorageImage
                   alt="user avatar"
                   path={userData.avatar}

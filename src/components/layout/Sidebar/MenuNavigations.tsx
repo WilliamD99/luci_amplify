@@ -46,7 +46,7 @@ export default function MenuNavigations({ id }: { id?: string }) {
           </div>
           <span className="menu_text">DMs</span>
         </button>
-        {id && <Notification />}
+        <Notification />
       </div>
     </>
   );

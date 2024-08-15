@@ -724,5 +724,5 @@ input:focus {
   }
 }
 .divider {
-  background-color: rgba(121, 124, 129, 0.3019607843);
+  border-color: rgba(121, 124, 129, 0.3019607843);
 }/*# sourceMappingURL=index.css.map */

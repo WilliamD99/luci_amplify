@@ -13,6 +13,7 @@ import PanelLayout from "@/components/layout/PanelLayout";
 import { cookies } from "next/headers";
 import LeftBar from "@/components/layout/LeftBar/index";
 import AuthClient from "@/components/auth/AuthClient";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,20 +38,21 @@ export default async function RootLayout({
         <div className="app_background">
           <Auth>
             <AuthClient>
-              <NavBar />
-
-              <main className="app_main">
-                <SideBar />
-                <div className="app_workspace">
-                  <div className="app_workspace--layout">
-                    <PanelLayout defaultLayout={defaultLayout}>
-                      <LeftBar />
-                      {children}
-                    </PanelLayout>
+              <Providers>
+                <NavBar />
+                <main className="app_main">
+                  <SideBar />
+                  <div className="app_workspace">
+                    <div className="app_workspace--layout">
+                      <PanelLayout defaultLayout={defaultLayout}>
+                        <LeftBar />
+                        {children}
+                      </PanelLayout>
+                    </div>
+                    <div className="app_workspace--banner"></div>
                   </div>
-                  <div className="app_workspace--banner"></div>
-                </div>
-              </main>
+                </main>
+              </Providers>
             </AuthClient>
           </Auth>
         </div>

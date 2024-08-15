@@ -137,3 +137,19 @@ export const getMsgByRelationship = async (
     return false;
   }
 };
+
+export const getCurrentUserData = cache(
+  async (): Promise<Schema["User"]["type"] | null> => {
+    try {
+      let userData = await getCurrentUser();
+
+      let userDataDetails = await databaseClient.models.User.get({
+        id: userData.userId,
+      });
+
+      return userDataDetails.data;
+    } catch (e) {
+      return null;
+    }
+  }
+);
