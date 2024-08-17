@@ -4,21 +4,16 @@ import React, { useState } from "react";
 import { SubmitBtn } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Schema } from "../../../amplify/data/resource";
 
 import { formEditProfileSchema } from "@/utils/form-schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { updateUserProfile } from "@/actions/userdata-action";
 import AvatarUpload from "./AvatarUpload";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ProfileClient({
   userData,
@@ -32,7 +27,24 @@ export default function ProfileClient({
     fullname?: string | null;
   };
 }) {
-  const [input, setInput] = useState(userData);
+  const [input] = useState(userData);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const formAction = async (formData: FormData) => {
+    let response = await updateUserProfile(formData);
+    if (response) {
+      queryClient.invalidateQueries({
+        queryKey: ["current-user"],
+      });
+
+      toast({
+        title: "Succeed!",
+        description: "Your profile has been updated",
+        duration: 1000,
+      });
+    }
+  };
 
   const form = useForm<z.infer<typeof formEditProfileSchema>>({
     resolver: zodResolver(formEditProfileSchema),
@@ -47,7 +59,7 @@ export default function ProfileClient({
   return (
     <>
       <Form {...form}>
-        <form action={updateUserProfile} className="mt-6 flex flex-col">
+        <form action={formAction} className="mt-6 flex flex-col">
           <div className="flex flex-row space-x-20">
             {/* Input fields */}
             <div className="flex flex-col space-y-5 inputs">
@@ -55,6 +67,7 @@ export default function ProfileClient({
                 <FormField
                   control={form.control}
                   name="email"
+                  disabled
                   render={({ field }) => (
                     <FormItem>
                       <Label htmlFor="email">

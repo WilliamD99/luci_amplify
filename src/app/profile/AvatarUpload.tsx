@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { useQueryClient } from "@tanstack/react-query";
 import { uploadData } from "aws-amplify/storage";
 import React, { ChangeEvent, useState } from "react";
 
@@ -17,6 +18,7 @@ export default function AvatarUpload({
   const [isLoading, setLoading] = useState<boolean>(false);
   const [uploadPercent, setUploadPercent] = useState<number>(0);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -38,7 +40,7 @@ export default function AvatarUpload({
       }).result;
       if (result) {
         setImagePath(`avatar/${userId}/${e.target.files[0].name}`);
-        console.log(userId);
+
         let updateUserRes = await updateUserAvatar(
           userId,
           `avatar/${userId}/${e.target.files[0].name}`
@@ -49,6 +51,9 @@ export default function AvatarUpload({
             title: "Succeed",
             description: "Image uploaded successfully!",
             duration: 1,
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["current-user"],
           });
         } else {
           toast({
@@ -67,11 +72,7 @@ export default function AvatarUpload({
     <>
       <Avatar className="bg-white relative flex flex-col avatar w-56 h-56 rounded-sm">
         {imagePath ? (
-          <StorageImage
-            alt="user avatar"
-            path={imagePath}
-            fallbackSrc="https://github.com/shadcn.png"
-          />
+          <StorageImage alt="user avatar" path={imagePath} />
         ) : (
           <AvatarFallback>CN</AvatarFallback>
         )}

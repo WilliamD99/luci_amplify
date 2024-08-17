@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
-
 import {
   PlusIcon,
   ChatBubbleLeftEllipsisIcon,
@@ -30,7 +28,7 @@ import { Schema } from "../../../../amplify/data/resource";
 export default function SideBarClient() {
   const [open, setOpen] = useState<boolean>(false);
   const { data } = useQuery<Schema["User"]["type"] | null>({
-    queryKey: ["Current User"],
+    queryKey: ["current-user"],
     queryFn: () => getCurrentUserData(),
   });
 

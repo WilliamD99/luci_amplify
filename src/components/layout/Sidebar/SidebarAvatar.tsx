@@ -24,11 +24,7 @@ export default function SidebarAvatar({
           <Button className="bg-transparent">
             <Avatar className="sidebar--bot__avatar">
               {userData?.avatar ? (
-                <StorageImage
-                  alt="user avatar"
-                  path={userData.avatar}
-                  fallbackSrc="https://github.com/shadcn.png"
-                />
+                <StorageImage alt="user avatar" path={userData.avatar} />
               ) : (
                 <AvatarFallback>CN</AvatarFallback>
               )}

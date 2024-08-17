@@ -21,8 +21,13 @@ export async function updateUserProfile(formData: FormData) {
       id: userId,
       ...rawFormData,
     });
+    if (errors) {
+      return false;
+    }
+    return data?.id;
   } catch (e) {
     // console.log(e);
+    return false;
   }
 }
 
