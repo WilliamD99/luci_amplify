@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { databaseClient } from "@/utils/amplify-utils.client";
 import React, { forwardRef, useContext, useEffect, useRef } from "react";
@@ -14,7 +14,6 @@ import { convertToUserTimezone, formatDateString } from "@/utils/utils";
 import { ChatContentType } from "./Form";
 import FileRenderer from "./FileRenderer";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
-import Image from "next/image";
 
 function ChatRenderer(
   {
@@ -101,18 +100,6 @@ let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
             <HoverCardTrigger>
               {/* <Link href="#"> */}
               <Avatar className="avatar">
-                <Image
-                  src="https://picsum.photos/100"
-                  width={100}
-                  height={100}
-                  alt="test"
-                />
-                <Image
-                  src="https://picsum.photos/100"
-                  width={100}
-                  height={100}
-                  alt="test"
-                />
                 {item.identifier === sender.id ? (
                   <StorageImage
                     path={sender.avatar ?? "/user_placeholder.jpg"}

@@ -43,7 +43,6 @@ export default function DmTabContent({
                     <StorageImage
                       alt={`${item.email} avatar`}
                       path={item.avatar}
-                      fallbackSrc="https://github.com/shadcn.png"
                     />
                   ) : (
                     <AvatarFallback>NA</AvatarFallback>

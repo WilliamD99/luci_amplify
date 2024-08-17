@@ -20,13 +20,14 @@ export const getNotifications = cache(async (limit: number = 10) => {
       "belongsTo.username",
       "belongsTo.id",
     ],
-    limit: 10,
+    limit: limit,
     filter: {
       status: {
         eq: "unread",
       },
     },
   });
+  console.log(data);
   if (errors)
     return {
       message: errors[0].message,

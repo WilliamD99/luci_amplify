@@ -23,15 +23,18 @@ export default function ActivityList({
     let data = await confirmFriendRequestAction(id, status, sourceId);
     if (!data) return;
 
-    if ("message" in data) {
-      toast({
-        title: "Error",
-        description: data.message,
-      });
-      return;
+    if (data) {
+      if ("message" in data) {
+        toast({
+          title: "Error",
+          description: data.message,
+        });
+        return;
+      }
     }
     // Need to remove the active notification after user has interacted with it
     let filteredList = list.filter((item) => item.id !== sourceId);
+    console.log(filteredList);
     setList(filteredList);
 
     if (status) {

@@ -67,6 +67,7 @@ export default function Notification() {
   useEffect(() => {
     getNotifications(10)
       .then((res: any) => {
+        console.log(res.data);
         setNotifications(res.data);
       })
       .catch((e) =>
