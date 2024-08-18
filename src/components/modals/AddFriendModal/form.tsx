@@ -14,7 +14,7 @@ import { Button, SubmitBtn } from "@/components/ui/button";
 import { addFriendAction } from "@/actions/userdata-action";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function AddFriendForm() {
+export default function AddFriendForm({ cb }: { cb?: () => void }) {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formAddFriendSchema>>({
     resolver: zodResolver(formAddFriendSchema),
@@ -22,9 +22,10 @@ export default function AddFriendForm() {
 
   const handleAddFriendAction = async (e: FormData) => {
     let data = await addFriendAction(e);
-    console.log(data);
+
     if (data) {
-      if ("message" in data) {
+      let status = data.status;
+      if (!status) {
         toast({
           title: "Error",
           description: data.message,
@@ -36,7 +37,14 @@ export default function AddFriendForm() {
             "We'll let you know when this user accepted your request.",
         });
       }
+    } else {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact support.",
+      });
     }
+
+    if (cb) cb();
   };
 
   return (
@@ -68,7 +76,7 @@ export default function AddFriendForm() {
             <DialogClose asChild>
               <Button>Close</Button>
             </DialogClose>
-            <SubmitBtn>Create</SubmitBtn>
+            <SubmitBtn>Add</SubmitBtn>
           </div>
         </form>
       </Form>

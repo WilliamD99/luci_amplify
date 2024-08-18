@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { ActivityListProps, ActivityListResult } from "./index";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { confirmFriendRequestAction } from "@/actions/userdata-action";
 import Link from "next/link";
 import { toast } from "../ui/use-toast";
+import { getNotificationsType } from "@/utils/amplify-utils.client";
 
 export default function ActivityList({
   list,
   setList,
 }: {
-  list: ActivityListProps["data"];
+  list: getNotificationsType[];
   setList: Function;
 }) {
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -22,30 +22,24 @@ export default function ActivityList({
     setLoading(true);
     let data = await confirmFriendRequestAction(id, status, sourceId);
     if (!data) return;
-
-    if (data) {
-      if ("message" in data) {
+    else {
+      let status = data.status;
+      if (status) {
+        toast({
+          title: "Succeed",
+          description: data.message,
+        });
+      } else {
         toast({
           title: "Error",
           description: data.message,
         });
-        return;
       }
     }
     // Need to remove the active notification after user has interacted with it
     let filteredList = list.filter((item) => item.id !== sourceId);
-    console.log(filteredList);
-    setList(filteredList);
 
-    if (status) {
-      toast({
-        title: "Friend Request Accepted",
-      });
-    } else {
-      toast({
-        title: "Friend Request Declined",
-      });
-    }
+    setList(filteredList);
     setLoading(false);
   };
 
@@ -54,9 +48,8 @@ export default function ActivityList({
       <div id="activity_list" className="space-y-2 flex flex-col">
         {list.length > 0 ? (
           list.map((item, index) => (
-            <>
+            <React.Fragment key={item.id}>
               <ActivityItem
-                key={item.id}
                 item={item}
                 handleFunc={handleItemAction}
                 isLoading={isLoading}
@@ -64,7 +57,7 @@ export default function ActivityList({
               {index >= 0 && list.length > 1 && (
                 <span className="h-[1px] border-t-[1px] border-gray-600" />
               )}
-            </>
+            </React.Fragment>
           ))
         ) : (
           <>
@@ -81,7 +74,7 @@ function ActivityItem({
   handleFunc,
   isLoading,
 }: {
-  item: ActivityListResult;
+  item: getNotificationsType;
   handleFunc: Function;
   isLoading: boolean;
 }) {

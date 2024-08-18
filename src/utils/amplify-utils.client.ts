@@ -3,40 +3,52 @@ import { type Schema } from "../../amplify/data/resource";
 import { cache } from "react";
 import { getCurrentUser } from "aws-amplify/auth";
 
+export type Nullable<T> = T | null;
+
 export const databaseClient = generateClient<Schema>({
   authMode: "userPool",
 });
 
-export const getNotifications = cache(async (limit: number = 10) => {
-  let { data, errors } = await databaseClient.models.NotificationCenter.list({
-    selectionSet: [
-      "id",
-      "type",
-      "createdAt",
-      "idSource",
-      "table",
-      "status",
-      "belongsTo.email",
-      "belongsTo.username",
-      "belongsTo.id",
-    ],
-    limit: limit,
-    filter: {
-      status: {
-        eq: "unread",
-      },
-    },
-  });
-  console.log(data);
-  if (errors)
-    return {
-      message: errors[0].message,
-    };
-
-  return {
-    data: data,
+export type getNotificationsType = {
+  readonly id: string;
+  readonly type: string;
+  readonly createdAt: string;
+  readonly idSource: string;
+  readonly table: string;
+  readonly status: string;
+  readonly belongsTo: {
+    readonly id: string;
+    readonly email: string;
+    readonly username: Nullable<string>;
   };
-});
+};
+export const getNotifications = cache(
+  async (limit: number = 10): Promise<getNotificationsType[] | false> => {
+    let { data, errors } = await databaseClient.models.NotificationCenter.list({
+      selectionSet: [
+        "id",
+        "type",
+        "createdAt",
+        "idSource",
+        "table",
+        "status",
+        "belongsTo.email",
+        "belongsTo.username",
+        "belongsTo.id",
+      ],
+      limit: limit,
+      filter: {
+        status: {
+          eq: "unread",
+        },
+      },
+    });
+
+    if (errors) return false;
+
+    return data;
+  }
+);
 
 export const getFriendList = cache(async () => {
   let userData = await getCurrentUser();

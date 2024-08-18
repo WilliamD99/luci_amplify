@@ -3,34 +3,27 @@
 import React, { useEffect, useState } from "react";
 import { Toaster } from "../ui/toaster";
 import { useToast } from "../ui/use-toast";
-import { databaseClient, getNotifications } from "@/utils/amplify-utils.client";
+import {
+  databaseClient,
+  getNotifications,
+  getNotificationsType,
+} from "@/utils/amplify-utils.client";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import ActivityList from "./ActivityList";
-
-export interface ActivityListResult {
-  id: string;
-  type: string;
-  table: string;
-  status: string;
-  idSource: string;
-  createdAt: string;
-  belongsTo: {
-    email: string;
-    username: string;
-    id: string;
-  };
-}
-
-export interface ActivityListProps {
-  data: ActivityListResult[];
-}
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 export default function Notification() {
-  let [notifications, setNotifications] = useState<ActivityListProps["data"]>(
-    []
-  );
+  const queryClient = useQueryClient();
   const { toast } = useToast();
+  let [notifications, setNotifications] = useState<getNotificationsType[]>([]);
+  let user = useAuthenticator((context) => [context.user]);
+
+  const { data, isSuccess } = useQuery<getNotificationsType[] | false>({
+    queryKey: ["notification", user.user.userId],
+    queryFn: () => getNotifications(10),
+  });
 
   // Subscribe to notification
   useEffect(() => {
@@ -56,6 +49,10 @@ export default function Notification() {
             },
           };
           setNotifications((prev) => [...prev, newNotification]);
+          // Invalidate notification cache when new notification is noticed
+          queryClient.invalidateQueries({
+            queryKey: ["notification", user.user.userId],
+          });
         },
         error: (error) => {
           console.log(error);
@@ -65,19 +62,10 @@ export default function Notification() {
   }, []);
 
   useEffect(() => {
-    getNotifications(10)
-      .then((res: any) => {
-        console.log(res.data);
-        setNotifications(res.data);
-      })
-      .catch((e) =>
-        toast({
-          title: "Error",
-          description:
-            "Something went wrong, please try again or contact support.",
-        })
-      );
-  }, []);
+    if (isSuccess && data) {
+      setNotifications(data);
+    }
+  }, [isSuccess]);
 
   return (
     <>

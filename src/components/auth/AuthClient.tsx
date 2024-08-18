@@ -204,7 +204,11 @@ export default function AuthClient({
 }) {
   return (
     <>
-      <Authenticator formFields={formFields} components={components}>
+      <Authenticator
+        socialProviders={["google", "apple"]}
+        formFields={formFields}
+        components={components}
+      >
         {children}
       </Authenticator>
     </>

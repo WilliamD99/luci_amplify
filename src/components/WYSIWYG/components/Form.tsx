@@ -42,6 +42,7 @@ export default function Form() {
 
   const appendChat = useCallback(
     (e: any, date: string) => {
+      console.log(chatContent);
       let temp = [...chatContent];
       // When users dont have any chat history
       if (temp.length === 0) {

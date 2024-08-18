@@ -44,11 +44,12 @@ export async function updateUserAvatar(userId: string, path: string) {
 
 export async function addFriendAction(
   formData: FormData
-): Promise<{ message: string } | Schema["UserRelationships"]["type"] | null> {
+): Promise<{ message: string; status: boolean } | null> {
   let currentUserData = await isAuthenticated();
   if (!currentUserData)
     return {
       message: "Unauthenticated request",
+      status: false,
     };
 
   let userId = currentUserData.id;
@@ -58,6 +59,7 @@ export async function addFriendAction(
   if (!user2_email) {
     return {
       message: "Please provide email",
+      status: false,
     };
   }
 
@@ -65,6 +67,7 @@ export async function addFriendAction(
   if (userEmail === user2_email) {
     return {
       message: "Can't send request to your self",
+      status: false,
     };
   }
 
@@ -82,6 +85,7 @@ export async function addFriendAction(
   if (targetFriendData.length === 0) {
     return {
       message: "No user found",
+      status: false,
     };
   }
 
@@ -123,23 +127,26 @@ export async function addFriendAction(
     });
 
   if (isDuplicate.length > 0) {
+    let status = isDuplicate[0].status;
     return {
-      message: "You're already friend with this user",
+      message:
+        status === "pending"
+          ? "Awaiting for friend request"
+          : "You're already friend with this user",
+      status: false,
     };
   }
 
-  let {
-    data: relationshipData,
-    errors: relationshipError,
-    extensions,
-  } = await cookieBasedClient.models.UserRelationships.create({
-    user1_id: userId,
-    user2_id: targetFriendData[0].id,
-  });
-  console.log(relationshipError);
+  let { data: relationshipData, errors: relationshipError } =
+    await cookieBasedClient.models.UserRelationships.create({
+      user1_id: userId,
+      user2_id: targetFriendData[0].id,
+    });
+
   if (!relationshipData) {
     return {
       message: "Something went wrong",
+      status: false,
     };
   }
   await addNotification(
@@ -150,7 +157,10 @@ export async function addFriendAction(
     "Friend Request"
   );
   // return relationshipData;
-  return null;
+  return {
+    message: "Friend request sent",
+    status: true,
+  };
 }
 
 // Change the status of the UserRelationships record (accepted or rejected)
@@ -159,7 +169,7 @@ export async function confirmFriendRequestAction(
   id: string,
   status: boolean,
   sourceId?: string
-): Promise<{ message: string } | Schema["UserRelationships"]["type"] | null> {
+): Promise<{ message: string; status: boolean } | null> {
   let { data, errors } =
     await cookieBasedClient.models.UserRelationships.update({
       id,
@@ -170,6 +180,7 @@ export async function confirmFriendRequestAction(
     if (errors?.length > 0) {
       return {
         message: errors[0].message,
+        status: false,
       };
     }
   }
@@ -178,10 +189,15 @@ export async function confirmFriendRequestAction(
       id: sourceId,
       status: "read",
     });
+    return {
+      message: "Friend Accepted",
+      status: true,
+    };
   }
   if (!data)
     return {
       message: "Something went wrong, please contact support.",
+      status: false,
     };
 
   return null;

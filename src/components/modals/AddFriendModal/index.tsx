@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,9 +14,11 @@ export default function AddFriendModal({
 }: {
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent id="md_create-room" className="sm:max-w-md">
           <DialogHeader>
@@ -29,7 +31,7 @@ export default function AddFriendModal({
               </span>
             </DialogDescription>
           </DialogHeader>
-          <AddFriendForm />
+          <AddFriendForm cb={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </>

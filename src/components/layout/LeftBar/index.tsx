@@ -13,6 +13,7 @@ export interface FriendListType {
 
 export default async function LeftBar() {
   let friendList = await getFriendListServer();
+  console.log(friendList, "friendlist");
   return (
     <div className="leftbar">
       <TabsContent value="account">
