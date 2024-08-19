@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { cookieBasedClient, isAuthenticated } from "./amplify-utils";
-import { FriendListType } from "@/components/layout/LeftBar";
+import { FriendListType } from "./amplify-utils.client";
 
 // Room
 export const getRoomList = cache(async () => {});
