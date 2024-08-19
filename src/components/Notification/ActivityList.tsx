@@ -4,6 +4,8 @@ import { confirmFriendRequestAction } from "@/actions/userdata-action";
 import Link from "next/link";
 import { toast } from "../ui/use-toast";
 import { getNotificationsType } from "@/utils/amplify-utils.client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 export default function ActivityList({
   list,
@@ -13,6 +15,8 @@ export default function ActivityList({
   setList: Function;
 }) {
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { user } = useAuthenticator((context) => [context.user]);
+  const queryClient = useQueryClient();
 
   const handleItemAction = async (
     id: string,
@@ -36,9 +40,14 @@ export default function ActivityList({
         });
       }
     }
+
+    // Need to invalidate friend list data to refresh it
+    queryClient.invalidateQueries({
+      queryKey: ["friendlist", user.userId],
+    });
+
     // Need to remove the active notification after user has interacted with it
     let filteredList = list.filter((item) => item.id !== sourceId);
-
     setList(filteredList);
     setLoading(false);
   };

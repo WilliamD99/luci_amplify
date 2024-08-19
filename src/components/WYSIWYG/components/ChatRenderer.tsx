@@ -58,6 +58,7 @@ function ChatRenderer(
       .subscribe({
         next: (e: any) => {
           handleReceivingMsg(e);
+          console.log(e);
         },
         error: (e) => console.log(e),
       });

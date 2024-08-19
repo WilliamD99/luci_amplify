@@ -18,10 +18,10 @@ export default function Notification() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   let [notifications, setNotifications] = useState<getNotificationsType[]>([]);
-  let user = useAuthenticator((context) => [context.user]);
+  let { user } = useAuthenticator((context) => [context.user]);
 
   const { data, isSuccess } = useQuery<getNotificationsType[] | false>({
-    queryKey: ["notification", user.user.userId],
+    queryKey: ["notification", user.userId],
     queryFn: () => getNotifications(10),
   });
 
@@ -51,7 +51,7 @@ export default function Notification() {
           setNotifications((prev) => [...prev, newNotification]);
           // Invalidate notification cache when new notification is noticed
           queryClient.invalidateQueries({
-            queryKey: ["notification", user.user.userId],
+            queryKey: ["notification", user.userId],
           });
         },
         error: (error) => {

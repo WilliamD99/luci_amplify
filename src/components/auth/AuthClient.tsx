@@ -12,6 +12,7 @@ import {
   useTheme,
   View,
 } from "@aws-amplify/ui-react";
+import { useRouter } from "next/navigation";
 
 const components = {
   Header() {
@@ -202,6 +203,7 @@ export default function AuthClient({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   return (
     <>
       <Authenticator

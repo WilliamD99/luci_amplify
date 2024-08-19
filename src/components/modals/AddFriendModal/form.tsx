@@ -18,6 +18,9 @@ export default function AddFriendForm({ cb }: { cb?: () => void }) {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formAddFriendSchema>>({
     resolver: zodResolver(formAddFriendSchema),
+    defaultValues: {
+      email: "",
+    },
   });
 
   const handleAddFriendAction = async (e: FormData) => {

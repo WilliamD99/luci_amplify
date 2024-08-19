@@ -5,19 +5,26 @@ import { TabsContent } from "@/components/ui/tabs";
 import React, { useEffect, useState } from "react";
 import SearchContent from "./SearchContent";
 import Link from "next/link";
-import { FriendListType } from ".";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { useQuery } from "@tanstack/react-query";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { FriendListType, getFriendList } from "@/utils/amplify-utils.client";
 
-export default function DmTabContent({
-  friendList,
-}: {
-  friendList: FriendListType[] | { message: string };
-}) {
-  const initialState: FriendListType[] = Array.isArray(friendList)
-    ? friendList
-    : [];
+export default function DmTabContent() {
+  const { user } = useAuthenticator((context) => [context.user]);
 
-  const [list, setList] = useState<FriendListType[]>(initialState);
+  const { data } = useQuery<FriendListType[] | false>({
+    queryKey: ["friendlist", user.userId],
+    queryFn: () => getFriendList(),
+  });
+
+  const [list, setList] = useState<FriendListType[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setList(data);
+    }
+  }, [data]);
 
   return (
     <>
@@ -31,35 +38,43 @@ export default function DmTabContent({
         </div>
         <span className="block divider h-[1px] w-full border-t-[1px]" />
         {/* List */}
-        {list.map((item) => (
-          <div key={item.id} className="dms_friendlist">
-            <Link
-              href={`/dms/${item.id}`}
-              className="py-2 px-4 w-full flex flex-row justify-between items-start dms_friendlist--item"
-            >
-              <div className="flex flex-row items-center space-x-2">
-                <Avatar className="h-5 w-5 rounded-md overflow-hidden">
-                  {item.avatar ? (
-                    <StorageImage
-                      alt={`${item.email} avatar`}
-                      path={item.avatar}
-                    />
-                  ) : (
-                    <AvatarFallback>NA</AvatarFallback>
-                  )}
-                </Avatar>
-
-                <div className="flex flex-col">
-                  <p className="text-sm font-semibold text-start">
-                    {item.username !== "" && item.username
-                      ? item.username
-                      : item.email}
-                  </p>
-                </div>
-              </div>
-            </Link>
+        {list.length === 0 ? (
+          <div className="px-4 pt-3">
+            <p className="text-sm opacity-85">Your friend list is empty</p>
           </div>
-        ))}
+        ) : (
+          <>
+            {list.map((item) => (
+              <div key={item.id} className="dms_friendlist">
+                <Link
+                  href={`/dms/${item.id}`}
+                  className="py-2 px-4 w-full flex flex-row justify-between items-start dms_friendlist--item"
+                >
+                  <div className="flex flex-row items-center space-x-2">
+                    <Avatar className="h-5 w-5 rounded-md overflow-hidden">
+                      {item.avatar ? (
+                        <StorageImage
+                          alt={`${item.email} avatar`}
+                          path={item.avatar}
+                        />
+                      ) : (
+                        <AvatarFallback>NA</AvatarFallback>
+                      )}
+                    </Avatar>
+
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold text-start">
+                        {item.username !== "" && item.username
+                          ? item.username
+                          : item.email}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </>
+        )}
       </TabsContent>
     </>
   );

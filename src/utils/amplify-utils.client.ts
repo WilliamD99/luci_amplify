@@ -50,84 +50,91 @@ export const getNotifications = cache(
   }
 );
 
-export const getFriendList = cache(async () => {
-  let userData = await getCurrentUser();
+export type FriendListType = {
+  createdAt: string;
+  id: string;
+  username: Nullable<string>;
+  email: string;
+  avatar: Nullable<string>;
+};
 
-  if (!userData)
-    return {
-      message: "Unauthenticated",
-    };
-  let userId = userData.userId;
-  let friendList1: any = [],
-    friendList2: any = [];
-  try {
-    let { data: friendlist1Data } =
-      await databaseClient.models.UserRelationships.listUserRelationshipsByUser1_id(
-        {
-          user1_id: userId,
-        },
-        {
-          filter: {
-            status: {
-              eq: "accepted",
-            },
+export const getFriendList = cache(
+  async (): Promise<FriendListType[] | false> => {
+    let userData = await getCurrentUser();
+
+    if (!userData) return false;
+    let userId = userData.userId;
+    let friendList1: FriendListType[] = [],
+      friendList2: FriendListType[] = [];
+
+    try {
+      // Friend list 1
+      let { data: friendlist1Data } =
+        await databaseClient.models.UserRelationships.listUserRelationshipsByUser1_id(
+          {
+            user1_id: userId,
           },
-          selectionSet: [
-            "createdAt",
-            "user2.id",
-            "user2.email",
-            "user2.avatar",
-            "user2.username",
-          ],
-        }
-      );
-    friendList1 = friendlist1Data.map((item) => {
-      return {
-        createdAt: item.createdAt,
-        id: item.user2.id,
-        username: item.user2.username,
-        email: item.user2.email,
-        avatar: item.user2.avatar,
-      };
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  try {
-    let { data: friendList2Data } =
-      await databaseClient.models.UserRelationships.listUserRelationshipsByUser2_id(
-        {
-          user2_id: userId,
-        },
-        {
-          filter: {
-            status: {
-              eq: "accepted",
+          {
+            filter: {
+              status: {
+                eq: "accepted",
+              },
             },
+            selectionSet: [
+              "createdAt",
+              "user2.id",
+              "user2.email",
+              "user2.avatar",
+              "user2.username",
+            ],
+          }
+        );
+      friendList1 = friendlist1Data.map((item) => {
+        return {
+          createdAt: item.createdAt,
+          id: item.user2.id,
+          username: item.user2.username,
+          email: item.user2.email,
+          avatar: item.user2.avatar,
+        };
+      });
+      // Friend list 2
+      let { data: friendList2Data } =
+        await databaseClient.models.UserRelationships.listUserRelationshipsByUser2_id(
+          {
+            user2_id: userId,
           },
-          selectionSet: [
-            "createdAt",
-            "user1.id",
-            "user1.email",
-            "user1.avatar",
-            "user1.username",
-          ],
-        }
-      );
-    friendList2 = friendList2Data.map((item) => {
-      return {
-        createdAt: item.createdAt,
-        id: item.user1.id,
-        username: item.user1.username,
-        email: item.user1.email,
-        avatar: item.user1.avatar,
-      };
-    });
-  } catch (e) {
-    console.log(e);
+          {
+            filter: {
+              status: {
+                eq: "accepted",
+              },
+            },
+            selectionSet: [
+              "createdAt",
+              "user1.id",
+              "user1.email",
+              "user1.avatar",
+              "user1.username",
+            ],
+          }
+        );
+      friendList2 = friendList2Data.map((item) => {
+        return {
+          createdAt: item.createdAt,
+          id: item.user1.id,
+          username: item.user1.username,
+          email: item.user1.email,
+          avatar: item.user1.avatar,
+        };
+      });
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+    return [...friendList1, ...friendList2];
   }
-  return [...friendList1, ...friendList2];
-});
+);
 
 export const getMsgByRelationship = async (
   id: string,
