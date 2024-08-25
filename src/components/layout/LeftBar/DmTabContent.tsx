@@ -13,7 +13,7 @@ import { FriendListType, getFriendList } from "@/utils/amplify-utils.client";
 export default function DmTabContent() {
   const { user } = useAuthenticator((context) => [context.user]);
 
-  const { data, isFetching } = useQuery<FriendListType[] | false>({
+  const { data, isLoading } = useQuery<FriendListType[] | false>({
     queryKey: ["friendlist", user.userId],
     queryFn: () => getFriendList(),
   });
@@ -40,7 +40,7 @@ export default function DmTabContent() {
         {/* List */}
         {
           // Show loading skeleton
-          isFetching && (
+          isLoading && (
             <div className="px-4 pt-3">
               <div className="animate-pulse flex flex-row items-center space-x-2 w-full">
                 <div className="h-5 w-5 rounded-md overflow-hidden bg-gray-300" />
@@ -51,7 +51,7 @@ export default function DmTabContent() {
             </div>
           )
         }
-        {list.length === 0 && !isFetching ? (
+        {list.length === 0 && !isLoading ? (
           <div className="px-4 pt-3">
             <p className="text-sm opacity-85">Your friend list is empty</p>
           </div>
