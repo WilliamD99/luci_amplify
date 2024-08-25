@@ -37,7 +37,6 @@ function ChatRenderer(
   }) => {
     if (cb) {
       const currentDate = new Date();
-      const userDate = currentDate.toDateString();
       const formattedISODate = currentDate.toISOString();
 
       let temp = { ...e };

@@ -41,7 +41,7 @@ export default function Form() {
     // sendBtnRef.current?.click();
   };
 
-  const appendChat = useCallback(
+  const appendChat = 
     (e: any, date: string) => {
 
       let temp = [...chatContent];
@@ -82,9 +82,7 @@ export default function Form() {
       });
       setFiles([]);
       return;
-    },
-    [files, chatContent]
-  );
+    }
 
   return (
     <>
