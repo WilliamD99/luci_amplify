@@ -27,7 +27,6 @@ export default async function PageServer({
 
   // Group MSG by Day
   let msg = groupMsgByDate(relationship.messages);
-  console.log(msg);
 
   return (
     <>

@@ -36,7 +36,7 @@ export default function PageClient({
     receiver.username && receiver.username !== ""
       ? receiver.username
       : receiver.email;
-  console.log(messages);
+      
   return (
     <>
       <UserDataContext.Provider

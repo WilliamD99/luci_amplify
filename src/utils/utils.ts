@@ -39,6 +39,17 @@ export function formatDateString(dateStr: string): string {
   }
 }
 
+export function convertDateTimezone(utcString: Date | string = new Date()): string {
+  const date = new Date(utcString);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+}
+
 export function groupMsgByDate(
   data: {
     readonly content: string;
@@ -54,8 +65,7 @@ export function groupMsgByDate(
 
   data.forEach((item) => {
     if (item.createdAt) {
-      let date = new Date(item.createdAt).toDateString();
-      // const date = item.createdAt.split("T")[0];
+      let date = convertDateTimezone(item.createdAt);
 
       if (groupedData.has(date)) {
         groupedData.get(date).push(item);

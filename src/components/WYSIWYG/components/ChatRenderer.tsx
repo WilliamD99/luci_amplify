@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { UserDataContext } from "@/app/dms/[id]/client";
-import { convertToUserTimezone, formatDateString } from "@/utils/utils";
+import { convertDateTimezone, convertToUserTimezone, formatDateString } from "@/utils/utils";
 import { ChatContentType } from "./Form";
 import FileRenderer from "./FileRenderer";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
@@ -25,6 +25,7 @@ function ChatRenderer(
   },
   ref: any
 ) {
+  console.log(content);
   const { sender, receiver }: any = useContext(UserDataContext);
 
   const handleReceivingMsg = (e: {
@@ -41,7 +42,7 @@ function ChatRenderer(
 
       let temp = { ...e };
       temp["createdAt"] = formattedISODate;
-      cb(temp, userDate);
+      cb(temp, convertDateTimezone());
     }
   };
 

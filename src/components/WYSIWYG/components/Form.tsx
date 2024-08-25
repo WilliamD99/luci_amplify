@@ -8,6 +8,7 @@ import React, {
 import ChatRenderer from "./ChatRenderer";
 import EditorMain from "./EditorMain";
 import { UserDataContext } from "@/app/dms/[id]/client";
+import { convertDateTimezone } from "@/utils/utils";
 
 export interface ChatContentType {
   date: string;
@@ -42,12 +43,12 @@ export default function Form() {
 
   const appendChat = useCallback(
     (e: any, date: string) => {
-      console.log(chatContent);
+
       let temp = [...chatContent];
       // When users dont have any chat history
       if (temp.length === 0) {
         temp.push({
-          date: new Date().toDateString(),
+          date: convertDateTimezone(),
           content: [e],
         });
         setChatContent(temp);
@@ -59,18 +60,22 @@ export default function Form() {
         return;
       }
 
-      let index = temp.findIndex((ele) => ele.date === date);
+      let index = temp.findIndex((ele) => 
+
+        ele.date === date
+      );
+
       if (index !== -1) {
         temp[index].content.push(e);
       } else {
-        let today = new Date();
 
         temp.push({
-          date: today.toDateString(),
+          date: convertDateTimezone(),
           content: [e],
         });
       }
       setChatContent(temp);
+      console.log(scrollAreaRef.current);
       scrollAreaRef.current?.scrollTo({
         top: scrollAreaRef.current?.scrollHeight,
         behavior: "smooth",

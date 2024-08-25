@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { UserDataContext } from "@/app/dms/[id]/client";
 import { filesContext } from "./EditorMain";
 import { databaseClient } from "@/utils/amplify-utils.client";
+import { convertDateTimezone } from "@/utils/utils";
 
 export default function SendBtn({
   btnRef,
@@ -32,7 +33,6 @@ export default function SendBtn({
     const markdownContent = turndownService.turndown(htmlContent ?? "");
 
     const currentDate = new Date();
-    const userDate = currentDate.toDateString();
     // Save the date in the database using UTC Timezone
     const formattedISODate = currentDate.toISOString();
 
@@ -71,7 +71,7 @@ export default function SendBtn({
           createdAt: formattedISODate,
           files: JSON.stringify(files),
         },
-        userDate
+        convertDateTimezone()
       );
     }
     editor?.chain().setContent("").run();
