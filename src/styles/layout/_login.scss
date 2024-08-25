@@ -1,20 +1,26 @@
 div[data-amplify-authenticator][data-variation="default"] {
   height: calc(100vh);
+  div[data-amplify-router] {
+    background-color: transparent;
+    border: none;
+  }
   .amplify-tabs {
-    background-color: black;
-
+    
     .amplify-tabs__list {
-      border-bottom: 1px solid black;
-      border-top-left-radius: 2rem;
-      border-top-right-radius: 2rem;
-      overflow: hidden;
+      background-color: var(--amplify-components-authenticator-router-background-color);
+      border-top: 1px solid black;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
 
       .amplify-tabs__item {
         color: gray;
         opacity: 0.8;
+        border-bottom: 1px solid hsl(210, 10%, 58%, 0.5);
+        
         &.amplify-tabs__item--active {
           color: black !important;
           opacity: 1;
+        border-bottom: 1px solid hsl(210, 10%, 58%);
         }
       }
 
@@ -26,7 +32,11 @@ div[data-amplify-authenticator][data-variation="default"] {
       }
     }
     .amplify-tabs__panel {
+      background-color: var(--amplify-components-authenticator-router-background-color);
       padding-block: 0px !important;
+      border-bottom: 1px solid black;
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
     }
 
     .amplify-button--link {

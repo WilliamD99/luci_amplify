@@ -12,7 +12,6 @@ import {
   useTheme,
   View,
 } from "@aws-amplify/ui-react";
-import { useRouter } from "next/navigation";
 
 const components = {
   Header() {
@@ -38,18 +37,6 @@ const components = {
   },
 
   SignIn: {
-    // Header() {
-    //   const { tokens } = useTheme();
-
-    //   return (
-    //     <Heading
-    //       padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-    //       level={3}
-    //     >
-    //       Sign in to your account
-    //     </Heading>
-    //   );
-    // },
     Footer() {
       const { toForgotPassword } = useAuthenticator();
 
@@ -83,6 +70,7 @@ const components = {
             hasError={!!validationErrors.acknowledgement}
             name="acknowledgement"
             value="yes"
+            required
             label="I agree with the Terms and Conditions"
           />
         </>
@@ -203,9 +191,8 @@ export default function AuthClient({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   return (
-    <>
+    <div className="rounded-full">
       <Authenticator
         socialProviders={["google", "apple"]}
         formFields={formFields}
@@ -213,6 +200,6 @@ export default function AuthClient({
       >
         {children}
       </Authenticator>
-    </>
+    </div>
   );
 }

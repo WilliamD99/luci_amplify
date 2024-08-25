@@ -424,28 +424,35 @@
 div[data-amplify-authenticator][data-variation=default] {
   height: 100vh;
 }
-div[data-amplify-authenticator][data-variation=default] .amplify-tabs {
-  background-color: black;
+div[data-amplify-authenticator][data-variation=default] div[data-amplify-router] {
+  background-color: transparent;
+  border: none;
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-tabs__list {
-  border-bottom: 1px solid black;
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
-  overflow: hidden;
+  background-color: var(--amplify-components-authenticator-router-background-color);
+  border-top: 1px solid black;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-tabs__list .amplify-tabs__item {
   color: gray;
   opacity: 0.8;
+  border-bottom: 1px solid hsla(210, 10%, 58%, 0.5);
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-tabs__list .amplify-tabs__item.amplify-tabs__item--active {
   color: black !important;
   opacity: 1;
+  border-bottom: 1px solid hsl(210, 10%, 58%);
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-tabs__list.amplify-tabs__list--top {
   --internal-item-border-width: 0px !important;
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-tabs__panel {
+  background-color: var(--amplify-components-authenticator-router-background-color);
   padding-block: 0px !important;
+  border-bottom: 1px solid black;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 div[data-amplify-authenticator][data-variation=default] .amplify-tabs .amplify-button--link {
   --amplify-internal-button-color: black !important;
