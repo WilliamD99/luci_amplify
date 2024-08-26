@@ -20,6 +20,13 @@ export default async function PageServer({
   // The one you're trying to send msg
   const receiverId = params.id;
   const receiverData = await getUserById(receiverId);
+
+  console.log(senderData.id, receiverData?.id);
+
+  if (senderData.id === receiverData?.id) {
+    return <p>Cannot send msg to yourself</p>;
+  }
+
   if (!receiverData) return <></>;
   // Get the relationship (act as a group)
   let relationship = await getRelationship(senderData.id, receiverId);
