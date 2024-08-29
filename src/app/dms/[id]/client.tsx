@@ -9,8 +9,8 @@ import { StorageImage } from "@aws-amplify/ui-react-storage";
 interface PageClientProps {
   receiver: any;
   sender: any;
-  relationshipId: string;
-  messages: {
+  relationshipId?: string;
+  messages?: {
     date: string;
     content: {
       id: string;
@@ -36,7 +36,7 @@ export default function PageClient({
     receiver.username && receiver.username !== ""
       ? receiver.username
       : receiver.email;
-      
+
   return (
     <>
       <UserDataContext.Provider

@@ -1,5 +1,6 @@
 import { JSONContent } from "novel";
 import { Schema } from "../../amplify/data/resource";
+import { Nullable } from "./amplify-utils.client";
 
 export function getInitials(input: string) {
   if (!input) return;
@@ -58,7 +59,7 @@ export function groupMsgByDate(
     readonly relationshipId: string;
     readonly id: string;
     readonly createdAt: string;
-    readonly updatedAt: string | null;
+    readonly updatedAt: Nullable<string> | undefined;
   }[]
 ) {
   const groupedData = new Map();

@@ -3,7 +3,7 @@ import { cookieBasedClient, isAuthenticated } from "./amplify-utils";
 import { FriendListType } from "./amplify-utils.client";
 
 // Room
-export const getRoomList = cache(async () => {});
+export const getRoomList = cache(async () => { });
 
 export const getRoom = cache(async (id: string) => {
   let data = await cookieBasedClient.models.Room.get(
@@ -179,3 +179,29 @@ export const getFriendListServer = async () => {
   }
   return [...friendList1, ...friendList2];
 };
+
+export const getMsgById = cache(async (id: string) => {
+  let data = await cookieBasedClient.models.ChatMessage.listChatMessageByIdentifier(
+    {
+      identifier: id, // The identifier is the user id
+    },
+    {
+      selectionSet: [
+        "id",
+        "content",
+        "identifier",
+        "receiver",
+        "relationshipId",
+        "createdAt",
+        "updatedAt",
+      ],
+      filter: {
+        receiver: {
+          eq: id,
+        }
+      }
+    }
+  )
+
+  return data.data;
+})

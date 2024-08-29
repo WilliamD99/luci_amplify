@@ -192,9 +192,6 @@
   z-index: 1;
   overflow: auto;
 }
-.chat_layout--content:first-child {
-  padding-top: 1rem;
-}
 .chat_layout--content .chatbox--group .line {
   flex: 1;
   height: 1px;
@@ -701,6 +698,10 @@ div[data-amplify-authenticator][data-variation=default] .amplify-button:hover {
 }
 #notification_content #activity_list .item .cta:hover {
   background-color: rgba(248, 248, 248, 0.25);
+}
+
+.btn {
+  border: 1px solid rgba(121, 124, 129, 0.5019607843);
 }
 
 p,

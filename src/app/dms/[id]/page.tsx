@@ -2,6 +2,7 @@ import React from "react";
 import PageClient from "./client";
 import { isAuthenticated } from "@/utils/amplify-utils";
 import {
+  getMsgById,
   getMsgByRelationship,
   getRelationship,
   getUserById,
@@ -21,10 +22,19 @@ export default async function PageServer({
   const receiverId = params.id;
   const receiverData = await getUserById(receiverId);
 
-  console.log(senderData.id, receiverData?.id);
-
   if (senderData.id === receiverData?.id) {
-    return <p>Cannot send msg to yourself</p>;
+    let msg = await getMsgById(senderData.id);
+    let groupedMsg = groupMsgByDate(msg);
+
+    return (
+      <div className="w-full">
+        <PageClient
+          receiver={senderData}
+          sender={senderData}
+          messages={groupedMsg}
+        />
+      </div>
+    );
   }
 
   if (!receiverData) return <></>;

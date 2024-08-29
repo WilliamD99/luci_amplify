@@ -10,10 +10,15 @@ import {
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { UserDataContext } from "@/app/dms/[id]/client";
-import { convertDateTimezone, convertToUserTimezone, formatDateString } from "@/utils/utils";
+import {
+  convertDateTimezone,
+  convertToUserTimezone,
+  formatDateString,
+} from "@/utils/utils";
 import { ChatContentType } from "./Form";
 import FileRenderer from "./FileRenderer";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { Button } from "@/components/ui/button";
 
 function ChatRenderer(
   {
@@ -58,7 +63,7 @@ function ChatRenderer(
       .subscribe({
         next: (e: any) => {
           handleReceivingMsg(e);
-          console.log(e);
+          console.log("hello");
         },
         error: (e) => console.log(e),
       });
@@ -70,6 +75,25 @@ function ChatRenderer(
     <>
       <ScrollArea className="chat_layout--content relative" ref={ref}>
         <div className="chatbox">
+          {content.length === 0 && sender.id !== receiver.id && (
+            <div className="flex px-6 h-full">
+              <p className="text-gray-400">No messages yet.</p>
+            </div>
+          )}
+          {/* If the sender is the same as the receiver, then display this message */}
+          {sender.id === receiver.id && (
+            <div className="flex flex-col space-y-2 px-6 py-4 h-full">
+              <p className="text-gray-400">
+                This is your space. Draft messages, list your to-dos, or keep
+                files and links handy. You can talk to yourself here, but please
+                bear in mind you'll have to supply both sides of the
+                conversation.
+              </p>
+              <div className="flex flex-row space-x-4">
+                <Button className="border-[1px] btn">Edit Profile</Button>
+              </div>
+            </div>
+          )}
           {content.map((contentItem, index) => (
             <ChatItem key={contentItem.date} contentItem={contentItem} />
           ))}

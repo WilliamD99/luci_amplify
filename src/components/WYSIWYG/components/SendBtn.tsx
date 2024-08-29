@@ -42,12 +42,15 @@ export default function SendBtn({
     }
 
     // // Send msg through PubSub
-    databaseClient.mutations.publish({
-      identifier: sender.id,
-      receiver: id,
-      content: markdownContent,
-      files: JSON.stringify(files),
-    });
+    if (sender.id !== id) {
+      // Only send the message that is not from yourself
+      databaseClient.mutations.publish({
+        identifier: sender.id,
+        receiver: id,
+        content: markdownContent,
+        files: JSON.stringify(files),
+      });
+    }
     // Save msg to dynamo
     try {
       await databaseClient.models.ChatMessage.create({
