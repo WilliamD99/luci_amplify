@@ -84,6 +84,7 @@ const schema = a
         index("relationshipId")
           .name("ChatMessageByDate")
           .sortKeys(["createdAt"]),
+        index("identifier").name("ChatMessageBySender"),
       ]),
     Message: a.customType({
       content: a.string().required(),

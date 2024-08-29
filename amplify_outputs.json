@@ -784,6 +784,16 @@
             {
               "type": "key",
               "properties": {
+                "name": "ChatMessageBySender",
+                "queryField": "listChatMessageByIdentifier",
+                "fields": [
+                  "identifier"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
                 "name": "ChatMessageByDate",
                 "queryField": "listChatMessageByRelationshipIdAndCreatedAt",
                 "fields": [
