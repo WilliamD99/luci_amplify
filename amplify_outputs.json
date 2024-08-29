@@ -785,7 +785,7 @@
               "type": "key",
               "properties": {
                 "name": "ChatMessageBySender",
-                "queryField": "receiver",
+                "queryField": "listChatMessageByIdentifier",
                 "fields": [
                   "identifier"
                 ]
