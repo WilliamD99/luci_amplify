@@ -41,41 +41,16 @@ export default function Form() {
     // sendBtnRef.current?.click();
   };
 
-  const appendChat = 
-    (e: any, date: string) => {
-
-      let temp = [...chatContent];
-      // When users dont have any chat history
-      if (temp.length === 0) {
-        temp.push({
-          date: convertDateTimezone(),
-          content: [e],
-        });
-        setChatContent(temp);
-        scrollAreaRef.current?.scrollTo({
-          top: scrollAreaRef.current?.scrollHeight,
-          behavior: "smooth",
-        });
-        setFiles([]);
-        return;
-      }
-
-      let index = temp.findIndex((ele) => 
-
-        ele.date === date
-      );
-
-      if (index !== -1) {
-        temp[index].content.push(e);
-      } else {
-
-        temp.push({
-          date: convertDateTimezone(),
-          content: [e],
-        });
-      }
+  const appendChat = (e: any, date: string) => {
+    let temp = [...chatContent];
+    // When users dont have any chat history
+    if (temp.length === 0) {
+      console.log("No chat history");
+      temp.push({
+        date: convertDateTimezone(),
+        content: [e],
+      });
       setChatContent(temp);
-      console.log(scrollAreaRef.current);
       scrollAreaRef.current?.scrollTo({
         top: scrollAreaRef.current?.scrollHeight,
         behavior: "smooth",
@@ -83,6 +58,28 @@ export default function Form() {
       setFiles([]);
       return;
     }
+
+    let index = temp.findIndex((ele) => ele.date === date);
+
+    if (index !== -1) {
+      console.log("Chat history exists, but different date");
+      temp[index].content.push(e);
+    } else {
+      console.log("Chat history exists, but same date");
+      temp.push({
+        date: convertDateTimezone(),
+        content: [e],
+      });
+    }
+    setChatContent(temp);
+
+    scrollAreaRef.current?.scrollTo({
+      top: scrollAreaRef.current?.scrollHeight,
+      behavior: "smooth",
+    });
+    setFiles([]);
+    return;
+  };
 
   return (
     <>

@@ -1,7 +1,6 @@
 "use server";
 
 import { cookieBasedClient, isAuthenticated } from "@/utils/amplify-utils";
-import { formCreateRoomSchema } from "@/utils/form-schema";
 
 export const createRoomAction = async (formData: FormData) => {
   let userData = await isAuthenticated();
@@ -35,7 +34,7 @@ export const createRoomAction = async (formData: FormData) => {
         userId,
         roomId: data?.id ?? "",
       });
-  } catch (e) {}
+  } catch (e) { }
   return {
     message: "Done",
   };
