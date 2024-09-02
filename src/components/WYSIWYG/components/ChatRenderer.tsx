@@ -30,7 +30,6 @@ function ChatRenderer(
   },
   ref: any
 ) {
-  console.log(content);
   const { sender, receiver }: any = useContext(UserDataContext);
 
   const handleReceivingMsg = (e: {
@@ -63,7 +62,6 @@ function ChatRenderer(
       .subscribe({
         next: (e: any) => {
           handleReceivingMsg(e);
-          console.log("hello");
         },
         error: (e) => console.log(e),
       });
@@ -76,7 +74,7 @@ function ChatRenderer(
       <ScrollArea className="chat_layout--content relative" ref={ref}>
         <div className="chatbox">
           {content.length === 0 && sender.id !== receiver.id && (
-            <div className="flex px-6 h-full">
+            <div className="flex py-5 px-6 h-full">
               <p className="text-gray-400">No messages yet.</p>
             </div>
           )}

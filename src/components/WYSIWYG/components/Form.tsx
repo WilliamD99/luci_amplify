@@ -40,45 +40,35 @@ export default function Form() {
     // So I decided to trigger the onClick event of the submit btn
     // sendBtnRef.current?.click();
   };
-
   const appendChat = (e: any, date: string) => {
-    let temp = [...chatContent];
-    // When users dont have any chat history
-    if (temp.length === 0) {
-      console.log("No chat history");
-      temp.push({
-        date: convertDateTimezone(),
-        content: [e],
-      });
-      setChatContent(temp);
+    setChatContent((prevChatContent) => {
+      // Create a copy of the previous chat content
+      let temp = [...prevChatContent];
+
+      // Find the index of the entry with the given date
+      const dateIndex = temp.findIndex((entry) => entry.date === date);
+
+      if (dateIndex !== -1) {
+        // If the date exists, push the new "e" to the content array
+        temp[dateIndex].content.push(e);
+      } else {
+        // If the date doesn't exist, create a new entry
+        temp.push({
+          date: convertDateTimezone(),
+          content: [e],
+        });
+      }
+
+      // Scroll to the bottom of the chat area
       scrollAreaRef.current?.scrollTo({
         top: scrollAreaRef.current?.scrollHeight,
         behavior: "smooth",
       });
+
+      // Clear the files array
       setFiles([]);
-      return;
-    }
-
-    let index = temp.findIndex((ele) => ele.date === date);
-
-    if (index !== -1) {
-      console.log("Chat history exists, but different date");
-      temp[index].content.push(e);
-    } else {
-      console.log("Chat history exists, but same date");
-      temp.push({
-        date: convertDateTimezone(),
-        content: [e],
-      });
-    }
-    setChatContent(temp);
-
-    scrollAreaRef.current?.scrollTo({
-      top: scrollAreaRef.current?.scrollHeight,
-      behavior: "smooth",
+      return temp;
     });
-    setFiles([]);
-    return;
   };
 
   return (
