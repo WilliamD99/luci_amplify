@@ -42,8 +42,13 @@
         }
       }
       &--item {
+        position: relative;
         &:hover {
           background-color: rgb(34, 37, 41);
+          .chatbox--item__utils {
+            visibility: visible;
+            opacity: 1;
+          }
         }
         .avatar {
         }
@@ -73,6 +78,33 @@
             &.active {
               transform: rotate(-90deg);
             }
+          }
+        }
+
+        &__utils {
+          position: absolute;
+          right: 10px;
+          top: 0;
+          transform: translateY(-50%);
+          border: 1px solid #797c814d;
+          background-color: rgb(26, 29, 33);
+          visibility: hidden;
+          opacity: 0;
+          transition: 0.3s ease;
+
+          &--btn {
+            display: flex;
+            justify-content: center;
+            transition: 0.3s ease;
+            &:hover {
+              background: #797c814d;
+            }
+          }
+        }
+        .emote-list {
+          .emote-item {
+            border: none;
+            background-color: #004d76;
           }
         }
       }

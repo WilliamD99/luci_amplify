@@ -7,18 +7,24 @@ import SearchContent from "./SearchContent";
 import Link from "next/link";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { useQuery } from "@tanstack/react-query";
-import { FriendListType, getCurrentUserData, getFriendList } from "@/utils/amplify-utils.client";
+import {
+  FriendListType,
+  getCurrentUserData,
+  getFriendList,
+} from "@/utils/amplify-utils.client";
 import { Schema } from "../../../../amplify/data/resource";
 
 export default function DmTabContent() {
-  const { data: userData, isLoading: isLoadingCurrentUser} = useQuery<Schema["User"]["type"] | null>({
+  const { data: userData, isLoading: isLoadingCurrentUser } = useQuery<
+    Schema["User"]["type"] | null
+  >({
     queryKey: ["current-user"],
     queryFn: () => getCurrentUserData(),
-  })
-  
+  });
+
   const { data, isLoading } = useQuery<FriendListType[] | false>({
     queryKey: ["friendlist", userData?.id],
-    queryFn: () => getFriendList(),
+    queryFn: () => getFriendList(userData?.id),
     enabled: userData?.id ? true : false,
   });
 
@@ -90,28 +96,30 @@ export default function DmTabContent() {
                 </Link>
               </div>
             ))}
-            <div className="dms_friendlist">
-              <Link
-                href={`/dms/${userData?.id}`}
-                className="py-2 px-4 w-full flex flex-row justify-between items-start dms_friendlist--item"
-              >
-                <div className="flex flex-row items-center space-x-2">
-                  <Avatar className="h-5 w-5 rounded-md overflow-hidden">
-                    {userData?.avatar ? (
-                      <StorageImage alt="user avatar" path={userData.avatar} />
-                    ) : (
-                      <AvatarFallback>CN</AvatarFallback>
-                    )}                  
-                  </Avatar>
-
-                  <div className="flex flex-col">
-                    <p className="text-sm font-semibold text-start">{userData?.username ?? userData?.email} (you)</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
           </>
         )}
+        <div className="dms_friendlist">
+          <Link
+            href={`/dms/${userData?.id}`}
+            className="py-2 px-4 w-full flex flex-row justify-between items-start dms_friendlist--item"
+          >
+            <div className="flex flex-row items-center space-x-2">
+              <Avatar className="h-5 w-5 rounded-md overflow-hidden">
+                {userData?.avatar ? (
+                  <StorageImage alt="user avatar" path={userData.avatar} />
+                ) : (
+                  <AvatarFallback>CN</AvatarFallback>
+                )}
+              </Avatar>
+
+              <div className="flex flex-col">
+                <p className="text-sm font-semibold text-start">
+                  {userData?.username ?? userData?.email} (you)
+                </p>
+              </div>
+            </div>
+          </Link>
+        </div>
       </TabsContent>
     </>
   );

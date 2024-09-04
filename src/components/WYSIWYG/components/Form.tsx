@@ -40,6 +40,7 @@ export default function Form() {
     // So I decided to trigger the onClick event of the submit btn
     // sendBtnRef.current?.click();
   };
+
   const appendChat = (e: any, date: string) => {
     setChatContent((prevChatContent) => {
       // Create a copy of the previous chat content

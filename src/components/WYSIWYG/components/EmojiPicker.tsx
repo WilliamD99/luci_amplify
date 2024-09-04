@@ -21,7 +21,10 @@ export default function EmojiPicker({
 
   return (
     <>
-      <div id="emoji_modal" className={`relaive ${clsx(open && "active")}`}>
+      <div
+        id="emoji_modal"
+        className={`emoji_modal relaive ${clsx(open && "active")}`}
+      >
         <Picker
           data={data}
           onEmojiSelect={handleAddEmoji}

@@ -19,6 +19,8 @@ import { ChatContentType } from "./Form";
 import FileRenderer from "./FileRenderer";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { Button } from "@/components/ui/button";
+import ChatItemUtils from "./ChatItemUtils";
+import EmoteList from "./EmoteList";
 
 function ChatRenderer(
   {
@@ -117,6 +119,7 @@ let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
       {contentItem.content.map((item, index) => (
         <div
           key={`${item.identifier}-${index}`}
+          id={item.id}
           className="flex flex-row items-start py-4 px-6 space-x-3 chatbox--item"
         >
           <HoverCard>
@@ -160,7 +163,11 @@ let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
             {item.files && item.files?.length > 0 && (
               <FileRenderer files={item.files} />
             )}
+            {/* Emote list */}
+            <EmoteList />
           </div>
+
+          <ChatItemUtils userId={sender.id} messageId={item.id} />
         </div>
       ))}
     </div>

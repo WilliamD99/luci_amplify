@@ -93,21 +93,9 @@ const components = {
       );
     },
   },
-  ConfirmSignUp: {
-    Footer() {
-      return <Text>Footer Information</Text>;
-    },
-  },
-  SetupTotp: {
-    Footer() {
-      return <Text>Footer Information</Text>;
-    },
-  },
-  ConfirmSignIn: {
-    Footer() {
-      return <Text>Footer Information</Text>;
-    },
-  },
+  ConfirmSignUp: {},
+  SetupTotp: {},
+  ConfirmSignIn: {},
   ForgotPassword: {},
   ConfirmResetPassword: {
     Header() {
@@ -194,7 +182,7 @@ export default function AuthClient({
   return (
     <div className="rounded-full">
       <Authenticator
-        socialProviders={["google", "apple"]}
+        // socialProviders={["google", "apple"]}
         formFields={formFields}
         components={components}
       >

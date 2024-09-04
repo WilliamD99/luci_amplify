@@ -202,8 +202,15 @@
   white-space: nowrap;
   border: 1px solid rgba(121, 124, 129, 0.3019607843);
 }
+.chat_layout--content .chatbox--item {
+  position: relative;
+}
 .chat_layout--content .chatbox--item:hover {
   background-color: rgb(34, 37, 41);
+}
+.chat_layout--content .chatbox--item:hover .chatbox--item__utils {
+  visibility: visible;
+  opacity: 1;
 }
 .chat_layout--content .chatbox--item .content {
   flex-wrap: wrap;
@@ -229,6 +236,29 @@
 }
 .chat_layout--content .chatbox--item .file-wrapper button.active {
   transform: rotate(-90deg);
+}
+.chat_layout--content .chatbox--item__utils {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  transform: translateY(-50%);
+  border: 1px solid rgba(121, 124, 129, 0.3019607843);
+  background-color: rgb(26, 29, 33);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+.chat_layout--content .chatbox--item__utils--btn {
+  display: flex;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+.chat_layout--content .chatbox--item__utils--btn:hover {
+  background: rgba(121, 124, 129, 0.3019607843);
+}
+.chat_layout--content .chatbox--item .emote-list .emote-item {
+  border: none;
+  background-color: #004d76;
 }
 .chat_layout .chat-form {
   display: flex;
@@ -462,6 +492,9 @@ div[data-amplify-authenticator][data-variation=default] .amplify-button--primary
 div[data-amplify-authenticator][data-variation=default] .amplify-button:hover {
   background-color: rgba(248, 248, 248, 0.25);
 }
+div[data-amplify-authenticator][data-variation=default] form[data-amplify-authenticator-confirmsignup] {
+  background-color: var(--amplify-components-authenticator-router-background-color);
+}
 
 #profile {
   height: 100%;
@@ -616,7 +649,7 @@ div[data-amplify-authenticator][data-variation=default] .amplify-button:hover {
   cursor: none;
 }
 
-#emoji_modal {
+.emoji_modal {
   opacity: 0;
   visibility: hidden;
   position: absolute !important;
@@ -627,7 +660,7 @@ div[data-amplify-authenticator][data-variation=default] .amplify-button:hover {
   overflow: hidden;
   z-index: 1000;
 }
-#emoji_modal.active {
+.emoji_modal.active {
   opacity: 1;
   visibility: visible;
 }

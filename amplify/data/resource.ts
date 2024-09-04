@@ -31,6 +31,7 @@ const schema = a
         notifications: a.hasMany("NotificationCenter", "from"),
         relationship1: a.hasMany("UserRelationships", "user1_id"),
         relationship2: a.hasMany("UserRelationships", "user2_id"),
+        emotes: a.belongsTo("ChatEmote", "email"),
       })
       .secondaryIndexes((index) => [index("email"), index("username")])
       .authorization((a) => [
@@ -75,6 +76,7 @@ const schema = a
         relationshipId: a.id().required(),
         relationshipSource: a.belongsTo("UserRelationships", "relationshipId"),
         files: a.string(),
+        emotes: a.hasMany("ChatEmote", "messageId"),
       })
       .authorization((a) => [
         a.ownerDefinedIn("identifier"),
@@ -86,6 +88,17 @@ const schema = a
           .sortKeys(["createdAt"]),
         index("identifier").name("ChatMessageBySender"),
       ]),
+    ChatEmote: a
+      .model({
+        content: a.string().required(),
+        messageId: a.id().required(),
+        message: a.belongsTo("ChatMessage", "messageId"),
+        userIdentifier: a.id().required(),
+        users: a.hasMany("User", "email"),
+        count: a.integer().default(0),
+      })
+      .authorization((a) => [a.authenticated()])
+      .secondaryIndexes((index) => [index("content")]),
     Message: a.customType({
       content: a.string().required(),
       identifier: a.string().required(),

@@ -5,9 +5,10 @@ div[data-amplify-authenticator][data-variation="default"] {
     border: none;
   }
   .amplify-tabs {
-    
     .amplify-tabs__list {
-      background-color: var(--amplify-components-authenticator-router-background-color);
+      background-color: var(
+        --amplify-components-authenticator-router-background-color
+      );
       border-top: 1px solid black;
       border-top-left-radius: 1rem;
       border-top-right-radius: 1rem;
@@ -16,11 +17,11 @@ div[data-amplify-authenticator][data-variation="default"] {
         color: gray;
         opacity: 0.8;
         border-bottom: 1px solid hsl(210, 10%, 58%, 0.5);
-        
+
         &.amplify-tabs__item--active {
           color: black !important;
           opacity: 1;
-        border-bottom: 1px solid hsl(210, 10%, 58%);
+          border-bottom: 1px solid hsl(210, 10%, 58%);
         }
       }
 
@@ -32,7 +33,9 @@ div[data-amplify-authenticator][data-variation="default"] {
       }
     }
     .amplify-tabs__panel {
-      background-color: var(--amplify-components-authenticator-router-background-color);
+      background-color: var(
+        --amplify-components-authenticator-router-background-color
+      );
       padding-block: 0px !important;
       border-bottom: 1px solid black;
       border-bottom-left-radius: 1rem;
@@ -53,5 +56,11 @@ div[data-amplify-authenticator][data-variation="default"] {
     &:hover {
       background-color: $gray_hovered;
     }
+  }
+
+  form[data-amplify-authenticator-confirmsignup] {
+    background-color: var(
+      --amplify-components-authenticator-router-background-color
+    );
   }
 }

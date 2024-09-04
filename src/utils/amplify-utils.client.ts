@@ -59,11 +59,9 @@ export type FriendListType = {
 };
 
 export const getFriendList = cache(
-  async (): Promise<FriendListType[] | false> => {
-    let userData = await getCurrentUser();
+  async (userId?: string): Promise<FriendListType[] | false> => {
+    if (!userId) return false;
 
-    if (!userData) return false;
-    let userId = userData.userId;
     let friendList1: FriendListType[] = [],
       friendList2: FriendListType[] = [];
 
@@ -169,7 +167,32 @@ export const getCurrentUserData = cache(
 
       return userDataDetails.data;
     } catch (e) {
+      console.log(e);
       return null;
     }
   }
 );
+
+export const handleReaction = async (
+  userId: string,
+  messageId: string,
+  content: string
+) => {
+  try {
+    let { data } = await databaseClient.models.ChatEmote.list({
+      selectionSet: ["users.*"],
+    });
+    // Need a data schema to connect user to emote, because its many-to-many
+    // let { data } = await databaseClient.models.ChatEmote.create({
+    //   content,
+    //   messageId,
+    //   userIdentifier: "dnam310199@gmail.com",
+    // });
+
+    console.log(data);
+    return data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};

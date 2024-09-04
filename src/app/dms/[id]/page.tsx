@@ -41,7 +41,6 @@ export default async function PageServer({
   // Get the relationship (act as a group)
   let relationship = await getRelationship(senderData.id, receiverId);
   if (!relationship) return <p>No relationship</p>;
-
   // Group MSG by Day
   let msg = groupMsgByDate(relationship.messages);
 
