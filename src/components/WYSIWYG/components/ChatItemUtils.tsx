@@ -5,10 +5,9 @@ import {
   ArrowUturnRightIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
-import { databaseClient, handleReaction } from "@/utils/amplify-utils.client";
+import { databaseClient } from "@/utils/amplify-utils.client";
 import EmojiPicker from "./EmojiPicker";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { useRouter } from "next/navigation";
 
 interface EmoteUserProps {
   chatEmoteId: string;
@@ -20,22 +19,11 @@ interface EmoteUserProps {
 
 export default function ChatItemUtils({
   userId,
-  receiverId,
   messageId,
-  emotes,
   addEmote,
 }: {
   userId: string;
-  receiverId: string;
   messageId: string;
-  emotes: {
-    content: string;
-    createdAt: string;
-    updatedAt?: string;
-    id: string;
-    messageId: string;
-    users: EmoteUserProps[];
-  }[];
   addEmote: (e: any) => void;
 }) {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
@@ -112,10 +100,24 @@ export default function ChatItemUtils({
         } else {
           // Remove the current user from the ChatEmote
           // by removing the relationship between the user and the ChatEmote
-          databaseClient.models.UserEmote.delete({
-            chatEmoteId: id,
-            userId,
-          }).catch((e) => console.error(e));
+          databaseClient.models.UserEmote.list({
+            filter: {
+              chatEmoteId: {
+                eq: id,
+              },
+              userId: {
+                eq: userId,
+              },
+            },
+          }).then((data) => {
+            if (data.data.length > 0) {
+              databaseClient.mutations
+                .removeEmoteRelationship({
+                  id: data.data[0].id,
+                })
+                .catch((e) => console.error(e));
+            }
+          });
           // Filter out currentUser from the userList
           userList = userList.filter(
             (user: EmoteUserProps) => user.userId !== userId
@@ -132,6 +134,7 @@ export default function ChatItemUtils({
             .catch((e) => console.error(e));
           return [...prev.filter((emote) => emote.content !== e)];
         } else {
+          // Update the ChatEmote in the emotes list
           const updatedEmotesUserList = prev.map((emote) =>
             emote.content === e ? selectedEmote : emote
           );

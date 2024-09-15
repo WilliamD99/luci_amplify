@@ -74,9 +74,7 @@ export default function ChatItem({ item }: { item: ChatItemContent }) {
 
         <ChatItemUtils
           userId={sender.id}
-          receiverId={receiver.id}
           messageId={item.id}
-          emotes={item.emotes}
           addEmote={setEmoteList}
         />
       </div>

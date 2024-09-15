@@ -104,14 +104,36 @@ const schema = a
         user: a.belongsTo("User", "userId"),
         chatEmote: a.belongsTo("ChatEmote", "chatEmoteId"),
       })
-      .authorization((a) => [a.authenticated()])
-      .identifier(["userId", "chatEmoteId"]),
+      .authorization((a) => [a.authenticated()]),
     Message: a.customType({
       content: a.string().required(),
       identifier: a.string().required(),
       receiver: a.string().required(),
       files: a.string(),
     }),
+    // Manage Chat message live emotes
+    publishEmote: a
+      .mutation()
+      .arguments({
+        identifier: a.string().required(), // id of the sender
+        receiver: a.string().required(),
+      })
+      .returns(a.ref("Message"))
+      .handler(
+        a.handler.custom({ entry: "./emote-handler/function/publish.js" })
+      )
+      .authorization((allow) => [allow.authenticated()]),
+    receiveEmote: a
+      .subscription()
+      .for(a.ref("publishEmote"))
+      .arguments({
+        identifier: a.string(), // id of the receiver
+        receiver: a.string(),
+      })
+      .handler(
+        a.handler.custom({ entry: "./emote-handler/function/receive.js" })
+      )
+      .authorization((allow) => [allow.authenticated()]),
     // Message publish mutation
     publish: a
       .mutation()
@@ -135,18 +157,10 @@ const schema = a
       .arguments({
         identifier: a.string(), // id of the receiver
         receiver: a.string(),
-        // from: a.string(), // id of the sender,
-        // type: a.string(), // single or multiple
       })
       // subscription handler to set custom filters
       .handler(a.handler.custom({ entry: "./receive.js" }))
       // authorization rules as to who can subscribe to the data
-      .authorization((allow) => [allow.authenticated()]),
-    // A data model to manage channels
-    Channel: a
-      .model({
-        name: a.string(),
-      })
       .authorization((allow) => [allow.authenticated()]),
     // Custom type
     addEmote: a

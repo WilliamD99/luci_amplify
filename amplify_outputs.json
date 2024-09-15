@@ -989,6 +989,13 @@
         "UserEmote": {
           "name": "UserEmote",
           "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
             "userId": {
               "name": "userId",
               "isArray": false,
@@ -1058,15 +1065,6 @@
               "properties": {}
             },
             {
-              "type": "key",
-              "properties": {
-                "fields": [
-                  "userId",
-                  "chatEmoteId"
-                ]
-              }
-            },
-            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -1084,11 +1082,9 @@
             }
           ],
           "primaryKeyInfo": {
-            "isCustomPrimaryKey": true,
-            "primaryKeyFieldName": "userId",
-            "sortKeyFieldNames": [
-              "chatEmoteId"
-            ]
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
           }
         },
         "Channel": {
