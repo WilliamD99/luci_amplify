@@ -45,7 +45,7 @@ export default function EmojiSelector() {
             <FaceSmileIcon className="h-3 w-3 pointer-events-none" />
           </Button>
         </PopoverTrigger>
-        <EmojiPicker open={open} setOpen={setOpen} cb={handleEmojiPicker} />
+        <EmojiPicker setOpen={setOpen} cb={handleEmojiPicker} />
       </Popover>
 
       {open && (
