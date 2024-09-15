@@ -31,7 +31,7 @@ const schema = a
         notifications: a.hasMany("NotificationCenter", "from"),
         relationship1: a.hasMany("UserRelationships", "user1_id"),
         relationship2: a.hasMany("UserRelationships", "user2_id"),
-        emotes: a.belongsTo("ChatEmote", "email"),
+        emotes: a.hasMany("UserEmote", "userId"),
       })
       .secondaryIndexes((index) => [index("email"), index("username")])
       .authorization((a) => [
@@ -93,12 +93,19 @@ const schema = a
         content: a.string().required(),
         messageId: a.id().required(),
         message: a.belongsTo("ChatMessage", "messageId"),
-        userIdentifier: a.id().required(),
-        users: a.hasMany("User", "email"),
-        count: a.integer().default(0),
+        users: a.hasMany("UserEmote", "chatEmoteId"),
       })
       .authorization((a) => [a.authenticated()])
       .secondaryIndexes((index) => [index("content")]),
+    UserEmote: a
+      .model({
+        userId: a.id().required(), // id of the user
+        chatEmoteId: a.id().required(), // id of the emote
+        user: a.belongsTo("User", "userId"),
+        chatEmote: a.belongsTo("ChatEmote", "chatEmoteId"),
+      })
+      .authorization((a) => [a.authenticated()])
+      .identifier(["userId", "chatEmoteId"]),
     Message: a.customType({
       content: a.string().required(),
       identifier: a.string().required(),
@@ -141,6 +148,66 @@ const schema = a
         name: a.string(),
       })
       .authorization((allow) => [allow.authenticated()]),
+    // Custom type
+    addEmote: a
+      .mutation()
+      .arguments({
+        userId: a.string().required(),
+        messageId: a.string().required(),
+        content: a.string().required(),
+        date: a.string().required(),
+        id: a.string().required(),
+      })
+      .returns(a.ref("ChatEmote"))
+      .authorization((allow) => [allow.authenticated()])
+      .handler(
+        a.handler.custom({
+          dataSource: a.ref("ChatEmote"),
+          entry: "./emote-handler/addEmote.js",
+        })
+      ),
+    removeEmote: a
+      .mutation()
+      .arguments({
+        id: a.string().required(),
+      })
+      .returns(a.ref("ChatEmote"))
+      .authorization((allow) => [allow.authenticated()])
+      .handler(
+        a.handler.custom({
+          dataSource: a.ref("ChatEmote"),
+          entry: "./emote-handler/removeEmote.js",
+        })
+      ),
+    // Custom query
+    addEmoteRelationship: a
+      .mutation()
+      .arguments({
+        userId: a.string().required(),
+        chatEmoteId: a.string().required(),
+        date: a.string().required(),
+      })
+      .returns(a.ref("UserEmote"))
+      .authorization((allow) => [allow.authenticated()])
+      .handler(
+        a.handler.custom({
+          dataSource: a.ref("UserEmote"),
+          entry: "./emote-handler/addEmoteRelationship.js",
+        })
+      ),
+    removeEmoteRelationship: a
+      .mutation()
+      .arguments({
+        id: a.string().required(),
+      })
+      .returns(a.ref("UserEmote"))
+      .authorization((allow) => [allow.authenticated()])
+      .handler(
+        a.handler.custom({
+          dataSource: a.ref("UserEmote"),
+          entry: "./emote-handler/removeEmoteRelationship.js",
+        })
+      ),
   })
   .authorization((allow) => [allow.resource(postConfirmation)]);
 

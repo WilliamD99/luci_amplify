@@ -12,15 +12,31 @@ import { convertDateTimezone } from "@/utils/utils";
 
 export interface ChatContentType {
   date: string;
-  content: {
+  content: ChatItemContent[];
+}
+
+export interface ChatItemContent {
+  content: string;
+  createdAt: string;
+  id: string;
+  identifier: string;
+  receiver: string;
+  relationshipId: string;
+  updatedAt?: string;
+  files?: string;
+  emotes: {
     content: string;
     createdAt: string;
-    id: string;
-    identifier: string;
-    receiver: string;
-    relationshipId: string;
     updatedAt?: string;
-    files?: string;
+    id: string;
+    messageId: string;
+    users: {
+      chatEmoteId: string;
+      createdAt: string;
+      updatedAt?: string;
+      id: string;
+      userId: string;
+    }[];
   }[];
 }
 

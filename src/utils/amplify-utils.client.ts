@@ -179,9 +179,27 @@ export const handleReaction = async (
   content: string
 ) => {
   try {
-    let { data } = await databaseClient.models.ChatEmote.list({
-      selectionSet: ["users.*"],
+    // let { data } = await databaseClient.models.ChatEmote.list({
+    //   selectionSet: ["users.*"],
+    // });
+    let date = new Date().toISOString();
+    // let data = await databaseClient.mutations.addEmote({
+    //   userId,
+    //   messageId,
+    //   content,
+    //   date,
+    // });
+
+    // let data = await databaseClient.mutations.addEmoteRelationship({
+    //   userId,
+    //   chatEmoteId: "cd5d55fb-e62b-4cb1-ab6f-1f14a0a7467a",
+    //   date,
+    // });
+
+    let data = await databaseClient.models.ChatMessage.list({
+      selectionSet: ["emotes.*"],
     });
+
     // Need a data schema to connect user to emote, because its many-to-many
     // let { data } = await databaseClient.models.ChatEmote.create({
     //   content,
@@ -189,7 +207,7 @@ export const handleReaction = async (
     //   userIdentifier: "dnam310199@gmail.com",
     // });
 
-    console.log(data);
+    console.log(data, "hehe");
     return data;
   } catch (e) {
     console.log(e);

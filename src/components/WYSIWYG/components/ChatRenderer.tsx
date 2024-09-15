@@ -1,26 +1,12 @@
-import { Avatar } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { databaseClient } from "@/utils/amplify-utils.client";
 import React, { forwardRef, useContext, useEffect, useRef } from "react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import Link from "next/link";
-import Markdown from "react-markdown";
+
 import { UserDataContext } from "@/app/dms/[id]/client";
-import {
-  convertDateTimezone,
-  convertToUserTimezone,
-  formatDateString,
-} from "@/utils/utils";
+import { convertDateTimezone, formatDateString } from "@/utils/utils";
 import { ChatContentType } from "./Form";
-import FileRenderer from "./FileRenderer";
-import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { Button } from "@/components/ui/button";
-import ChatItemUtils from "./ChatItemUtils";
-import EmoteList from "./EmoteList";
+import ChatItem from "./ChatItem";
 
 function ChatRenderer(
   {
@@ -95,7 +81,7 @@ function ChatRenderer(
             </div>
           )}
           {content.map((contentItem, index) => (
-            <ChatItem key={contentItem.date} contentItem={contentItem} />
+            <ChatItemByDate key={contentItem.date} contentItem={contentItem} />
           ))}
         </div>
       </ScrollArea>
@@ -103,9 +89,8 @@ function ChatRenderer(
   );
 }
 
-let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
+let ChatItemByDate = ({ contentItem }: { contentItem: ChatContentType }) => {
   const eleRef = useRef<HTMLDivElement>(null);
-  const { sender, receiver }: any = useContext(UserDataContext);
 
   return (
     <div ref={eleRef} className="h-full w-full">
@@ -116,59 +101,8 @@ let ChatItem = ({ contentItem }: { contentItem: ChatContentType }) => {
         </button>
         <span className="line"></span>
       </div>
-      {contentItem.content.map((item, index) => (
-        <div
-          key={`${item.identifier}-${index}`}
-          id={item.id}
-          className="flex flex-row items-start py-4 px-6 space-x-3 chatbox--item"
-        >
-          <HoverCard>
-            <HoverCardTrigger>
-              {/* <Link href="#"> */}
-              <Avatar className="avatar">
-                {item.identifier === sender.id ? (
-                  <StorageImage
-                    path={sender.avatar ?? "/user_placeholder.jpg"}
-                    alt="avatar"
-                    fallbackSrc="/user_placeholder.jpg"
-                  />
-                ) : (
-                  <StorageImage
-                    path={receiver.avatar ?? "/user_placeholder.jpg"}
-                    alt="avatar"
-                    fallbackSrc="/user_placeholder.jpg"
-                  />
-                )}
-              </Avatar>
-              {/* </Link> */}
-            </HoverCardTrigger>
-            <HoverCardContent side="right">
-              The React Framework – created and maintained by @vercel.
-            </HoverCardContent>
-          </HoverCard>
-
-          <div className="space-y-1 content">
-            <div className="col-span-4 flex flex-row items-center *: space-x-2">
-              <Link href="#" className="font-bold name">
-                {item.identifier === sender.id
-                  ? "You"
-                  : receiver.username ?? receiver.email}
-              </Link>
-              <p className="text-sm time">
-                {convertToUserTimezone(item.createdAt)}
-              </p>
-            </div>
-
-            <Markdown>{item.content}</Markdown>
-            {item.files && item.files?.length > 0 && (
-              <FileRenderer files={item.files} />
-            )}
-            {/* Emote list */}
-            <EmoteList />
-          </div>
-
-          <ChatItemUtils userId={sender.id} messageId={item.id} />
-        </div>
+      {contentItem.content.map((item) => (
+        <ChatItem key={item.id} item={item} />
       ))}
     </div>
   );

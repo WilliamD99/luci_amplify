@@ -3,7 +3,7 @@ import { cookieBasedClient, isAuthenticated } from "./amplify-utils";
 import { FriendListType } from "./amplify-utils.client";
 
 // Room
-export const getRoomList = cache(async () => { });
+export const getRoomList = cache(async () => {});
 
 export const getRoom = cache(async (id: string) => {
   let data = await cookieBasedClient.models.Room.get(
@@ -69,7 +69,12 @@ export const getRelationship = async (id1: string, id2: string) => {
           },
         ],
       },
-      selectionSet: ["id", "messages.*"],
+      selectionSet: [
+        "id",
+        "messages.*",
+        "messages.emotes.*",
+        "messages.emotes.users.*",
+      ],
       authMode: "userPool",
     });
     if (data.length === 0) return false;
@@ -181,27 +186,28 @@ export const getFriendListServer = async () => {
 };
 
 export const getMsgById = cache(async (id: string) => {
-  let data = await cookieBasedClient.models.ChatMessage.listChatMessageByIdentifier(
-    {
-      identifier: id, // The identifier is the user id
-    },
-    {
-      selectionSet: [
-        "id",
-        "content",
-        "identifier",
-        "receiver",
-        "relationshipId",
-        "createdAt",
-        "updatedAt",
-      ],
-      filter: {
-        receiver: {
-          eq: id,
-        }
+  let data =
+    await cookieBasedClient.models.ChatMessage.listChatMessageByIdentifier(
+      {
+        identifier: id, // The identifier is the user id
+      },
+      {
+        selectionSet: [
+          "id",
+          "content",
+          "identifier",
+          "receiver",
+          "relationshipId",
+          "createdAt",
+          "updatedAt",
+        ],
+        filter: {
+          receiver: {
+            eq: id,
+          },
+        },
       }
-    }
-  )
+    );
 
   return data.data;
-})
+});

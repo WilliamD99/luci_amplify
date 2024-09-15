@@ -1,30 +1,25 @@
 import React from "react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import clsx from "clsx";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEditor } from "novel";
+import { PopoverContent } from "@/components/ui/popover";
 
 export default function EmojiPicker({
-  open,
   setOpen,
+  cb,
 }: {
-  open: boolean;
   setOpen: Function;
+  cb?: Function;
 }) {
-  const { editor } = useEditor();
-
   const handleAddEmoji = (e: any) => {
-    editor?.chain().insertContent(e.native).run();
+    if (cb) {
+      cb(e.native);
+    }
     setOpen(false);
   };
 
   return (
     <>
-      <div
-        id="emoji_modal"
-        className={`emoji_modal relaive ${clsx(open && "active")}`}
-      >
+      <PopoverContent className="w-[200px] p-0" align="end">
         <Picker
           data={data}
           onEmojiSelect={handleAddEmoji}
@@ -32,10 +27,7 @@ export default function EmojiPicker({
           perLine={8}
           skin={6}
         />
-        <div className="absolute">
-          <p>Test</p>
-        </div>
-      </div>
+      </PopoverContent>
     </>
   );
 }

@@ -649,22 +649,6 @@ div[data-amplify-authenticator][data-variation=default] form[data-amplify-authen
   cursor: none;
 }
 
-.emoji_modal {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute !important;
-  right: 0;
-  top: 0;
-  transform: translate(102%, -50%);
-  height: 300px;
-  overflow: hidden;
-  z-index: 1000;
-}
-.emoji_modal.active {
-  opacity: 1;
-  visibility: visible;
-}
-
 #upload_modal {
   background-color: #1a1d21;
   border: none;

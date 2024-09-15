@@ -9,6 +9,8 @@ import {
 } from "@/utils/fetching-server";
 import { groupMsgByDate } from "@/utils/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function PageServer({
   params,
 }: {

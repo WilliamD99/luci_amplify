@@ -117,22 +117,22 @@
   }
 }
 
-.emoji_modal {
-  opacity: 0;
-  visibility: hidden;
+// .emoji_modal {
+//   // opacity: 0;
+//   // visibility: hidden;
 
-  position: absolute !important;
-  right: 0;
-  top: 0;
-  transform: translate(102%, -50%);
-  height: 300px;
-  overflow: hidden;
-  z-index: 1000;
-  &.active {
-    opacity: 1;
-    visibility: visible;
-  }
-}
+//   position: absolute !important;
+//   right: 0;
+//   top: 0;
+//   // transform: translate(102%, -50%);
+//   height: 300px;
+//   overflow: hidden;
+//   z-index: 1000;
+//   &.active {
+//     opacity: 1;
+//     visibility: visible;
+//   }
+// }
 
 #upload_modal {
   background-color: #1a1d21;

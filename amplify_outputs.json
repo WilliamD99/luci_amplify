@@ -1,9 +1,10 @@
 {
   "auth": {
-    "user_pool_id": "us-east-2_oIxyk3537",
+    "user_pool_id": "us-east-2_rqpW7XQwb",
     "aws_region": "us-east-2",
-    "user_pool_client_id": "7bfsl1dese42h0q0plkrprsc10",
-    "identity_pool_id": "us-east-2:963b2f16-6cab-4103-839a-041fe2f67c0b",
+    "user_pool_client_id": "37u2f23b3sedb2c39lupvfakvh",
+    "identity_pool_id": "us-east-2:9ff8a930-ed9f-472c-a6f0-d508977ba1b5",
+    "mfa_methods": [],
     "standard_required_attributes": [
       "email"
     ],
@@ -13,17 +14,18 @@
     "user_verification_types": [
       "email"
     ],
+    "mfa_configuration": "NONE",
     "password_policy": {
       "min_length": 8,
-      "require_numbers": true,
       "require_lowercase": true,
-      "require_uppercase": true,
-      "require_symbols": true
+      "require_numbers": true,
+      "require_symbols": true,
+      "require_uppercase": true
     },
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://6xqq7pauz5beleki6ney5q3j5i.appsync-api.us-east-2.amazonaws.com/graphql",
+    "url": "https://b6tv5buuqzdllcbjwpopdmf2tm.appsync-api.us-east-2.amazonaws.com/graphql",
     "aws_region": "us-east-2",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
@@ -290,16 +292,17 @@
             },
             "emotes": {
               "name": "emotes",
-              "isArray": false,
+              "isArray": true,
               "type": {
-                "model": "ChatEmote"
+                "model": "UserEmote"
               },
               "isRequired": false,
               "attributes": [],
+              "isArrayNullable": true,
               "association": {
-                "connectionType": "BELONGS_TO",
-                "targetNames": [
-                  "email"
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "userId"
                 ]
               }
             }
@@ -910,18 +913,11 @@
                 ]
               }
             },
-            "userIdentifier": {
-              "name": "userIdentifier",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
             "users": {
               "name": "users",
               "isArray": true,
               "type": {
-                "model": "User"
+                "model": "UserEmote"
               },
               "isRequired": false,
               "attributes": [],
@@ -929,16 +925,9 @@
               "association": {
                 "connectionType": "HAS_MANY",
                 "associatedWith": [
-                  "email"
+                  "chatEmoteId"
                 ]
               }
-            },
-            "count": {
-              "name": "count",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
             },
             "createdAt": {
               "name": "createdAt",
@@ -995,6 +984,111 @@
             "isCustomPrimaryKey": false,
             "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
+          }
+        },
+        "UserEmote": {
+          "name": "UserEmote",
+          "fields": {
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatEmoteId": {
+              "name": "chatEmoteId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "user": {
+              "name": "user",
+              "isArray": false,
+              "type": {
+                "model": "User"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "userId"
+                ]
+              }
+            },
+            "chatEmote": {
+              "name": "chatEmote",
+              "isArray": false,
+              "type": {
+                "model": "ChatEmote"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "chatEmoteId"
+                ]
+              }
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "UserEmotes",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "userId",
+                  "chatEmoteId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "userId",
+            "sortKeyFieldNames": [
+              "chatEmoteId"
+            ]
           }
         },
         "Channel": {
@@ -1132,6 +1226,106 @@
               "isRequired": false
             }
           }
+        },
+        "addEmote": {
+          "name": "addEmote",
+          "isArray": false,
+          "type": {
+            "model": "ChatEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "messageId": {
+              "name": "messageId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "date": {
+              "name": "date",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "removeEmote": {
+          "name": "removeEmote",
+          "isArray": false,
+          "type": {
+            "model": "ChatEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "addEmoteRelationship": {
+          "name": "addEmoteRelationship",
+          "isArray": false,
+          "type": {
+            "model": "UserEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "chatEmoteId": {
+              "name": "chatEmoteId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "date": {
+              "name": "date",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "removeEmoteRelationship": {
+          "name": "removeEmoteRelationship",
+          "isArray": false,
+          "type": {
+            "model": "UserEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
         }
       },
       "subscriptions": {
@@ -1162,7 +1356,14 @@
   },
   "storage": {
     "aws_region": "us-east-2",
-    "bucket_name": "amplify-amplifygen2-dnam3-amplifystoragebucket7f87-rzwdxg2rycvp"
+    "bucket_name": "amplify-amplifygen2-dnam3-amplifystoragebucket7f87-lie6hxfah8cz",
+    "buckets": [
+      {
+        "name": "amplifyStorage",
+        "bucket_name": "amplify-amplifygen2-dnam3-amplifystoragebucket7f87-lie6hxfah8cz",
+        "aws_region": "us-east-2"
+      }
+    ]
   },
-  "version": "1"
+  "version": "1.1"
 }

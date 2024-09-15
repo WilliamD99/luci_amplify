@@ -1,8 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { FaceSmileIcon } from "@heroicons/react/24/solid";
 
-export default function EmoteList() {
+interface EmoteType {
+  content: string;
+  createdAt: string;
+  updatedAt?: string;
+  id: string;
+  messageId: string;
+  users: any[];
+}
+
+export default function EmoteList({ emotes }: { emotes: EmoteType[] }) {
+  return (
+    <>
+      {emotes?.length > 0 && (
+        <div className="flex flex-row space-x-3">
+          {emotes.map((emote: EmoteType) => (
+            <EmoteItem key={emote.id} emote={emote} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+let EmoteItem = ({
+  emote,
+}: {
+  emote: {
+    content: string;
+    createdAt: string;
+    updatedAt?: string;
+    id: string;
+    messageId: string;
+    users: any[];
+  };
+}) => {
+  let [emoteLength, setEmoteLength] = useState(emote.users.length);
+
+  useEffect(() => {
+    setEmoteLength(emote.users.length);
+  }, [emote.users.length]);
+
   return (
     <>
       <div className="flex flex-row space-x-2 pt-1 emote-list">
@@ -10,10 +49,10 @@ export default function EmoteList() {
           variant="outline"
           className="emote-item flex flex-row  justify-center items-center space-x-1"
         >
-          <FaceSmileIcon className="w-4 h-4 text-yellow-400" />
-          <span className="text-xs">1</span>
+          <p className="w-4 h-4 text-yellow-400">{emote.content}</p>
+          <span className="text-xs">{emoteLength !== 0 ? emoteLength : 1}</span>
         </Badge>
       </div>
     </>
   );
-}
+};
