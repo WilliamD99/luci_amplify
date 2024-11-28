@@ -45,36 +45,43 @@ function ChatRenderer(
 
   // Subscription to receive messages
   useEffect(() => {
-    ref.current?.scrollTo({
-      top: ref.current?.scrollHeight,
-      behavior: "smooth",
-    });
-    const sub = databaseClient.subscriptions
-      .receive({
-        identifier: receiver.id,
-        receiver: sender.id,
-      })
-      .subscribe({
-        next: (e: any) => {
-          handleReceivingMsg(e);
-        },
-        error: (e) => console.log(e),
+    let sub: any;
+    if (sender && receiver) {
+      ref.current?.scrollTo({
+        top: ref.current?.scrollHeight,
+        behavior: "smooth",
       });
+      sub = databaseClient.subscriptions
+        .receive({
+          identifier: receiver.id,
+          receiver: sender.id,
+        })
+        .subscribe({
+          next: (e: any) => {
+            handleReceivingMsg(e);
+          },
+          error: (e) => console.log(e),
+        });
+    }
 
-    return () => sub.unsubscribe();
+    return () => {
+      if (sub) {
+        sub.unsubscribe();
+      }
+    };
   }, []);
 
   return (
     <>
       <ScrollArea className="chat_layout--content relative" ref={ref}>
         <div className="chatbox">
-          {content.length === 0 && sender.id !== receiver.id && (
+          {content.length === 0 && sender?.id !== receiver?.id && (
             <div className="flex py-5 px-6 h-full">
               <p className="text-gray-400">No messages yet.</p>
             </div>
           )}
           {/* If the sender is the same as the receiver, then display this message */}
-          {sender.id === receiver.id && (
+          {sender && sender?.id === receiver?.id && (
             <div className="flex flex-col space-y-2 px-6 py-4 h-full">
               <p className="text-gray-400">
                 This is your space. Draft messages, list your to-dos, or keep
@@ -87,6 +94,9 @@ function ChatRenderer(
               </div>
             </div>
           )}
+
+          {/* If no sender or receiver, must be the ai path -> render this */}
+
           {content.map((contentItem, index) => (
             <ChatItemByDate key={contentItem.date} contentItem={contentItem} />
           ))}

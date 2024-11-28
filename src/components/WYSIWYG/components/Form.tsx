@@ -48,7 +48,9 @@ export default function Form() {
 
   const { messages }: any = useContext(UserDataContext);
 
-  const [chatContent, setChatContent] = useState<ChatContentType[]>(messages);
+  const [chatContent, setChatContent] = useState<ChatContentType[]>(
+    messages ?? []
+  );
   const [files, setFiles] = useState<{ path: string; index: number }[]>([]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

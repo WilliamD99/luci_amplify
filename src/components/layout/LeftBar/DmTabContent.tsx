@@ -13,6 +13,7 @@ import {
   getFriendList,
 } from "@/utils/amplify-utils.client";
 import { Schema } from "../../../../amplify/data/resource";
+import Image from "next/image";
 
 export default function DmTabContent() {
   const { data: userData, isLoading: isLoadingCurrentUser } = useQuery<
@@ -116,6 +117,22 @@ export default function DmTabContent() {
                 <p className="text-sm font-semibold text-start">
                   {userData?.username ?? userData?.email} (you)
                 </p>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="dms_friendlist">
+          <Link
+            href={`/dms/ai`}
+            className="py-2 px-4 w-full flex flex-row justify-between items-start dms_friendlist--item"
+          >
+            <div className="flex flex-row items-center space-x-2">
+              <Avatar className="h-5 w-5 rounded-md overflow-hidden">
+                <Image src="/astro.webp" fill alt="AI Chat logo" />
+              </Avatar>
+
+              <div className="flex flex-col">
+                <p className="text-sm font-semibold text-start">AI Assistant</p>
               </div>
             </div>
           </Link>
