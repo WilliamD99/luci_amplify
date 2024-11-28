@@ -19,7 +19,7 @@ import EmoteList from "./EmoteList";
 export default function ChatItem({ item }: { item: ChatItemContent }) {
   const { sender, receiver }: any = useContext(UserDataContext);
   const [emoteList, setEmoteList] = useState(item.emotes);
-
+  // console.log(item);
   return (
     <>
       <div
@@ -74,6 +74,7 @@ export default function ChatItem({ item }: { item: ChatItemContent }) {
 
         <ChatItemUtils
           userId={sender.id}
+          receiverId={receiver.id}
           messageId={item.id}
           addEmote={setEmoteList}
         />

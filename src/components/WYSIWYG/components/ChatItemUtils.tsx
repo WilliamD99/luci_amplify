@@ -19,10 +19,12 @@ interface EmoteUserProps {
 
 export default function ChatItemUtils({
   userId,
+  receiverId,
   messageId,
   addEmote,
 }: {
   userId: string;
+  receiverId: string;
   messageId: string;
   addEmote: (e: any) => void;
 }) {
@@ -31,12 +33,13 @@ export default function ChatItemUtils({
   // If the selected emote's user list is empty, then create a new emote and add the user to it
   // If the selected emote's user list is not empty, then just need to add the user to its
   const handleEmote = async (e: string) => {
+    let id = `${messageId}${e}`;
+
     setEmojiPickerOpen(false);
     addEmote((prev: any[]) => {
       // Find the selected emote (if it exists)
       let selectedEmote = prev?.find((emote) => emote.content === e);
-      let id = `${messageId}${e}`;
-
+      console.log(selectedEmote);
       // If the selected emote does not exist, then create a new emote
       if (!selectedEmote) {
         let date = new Date().toISOString();
@@ -57,6 +60,15 @@ export default function ChatItemUtils({
             date,
           })
           .catch((e) => console.error(e));
+        // Publish the emote to the receiver
+        databaseClient.mutations.publishEmote({
+          identifier: userId,
+          receiver: receiverId,
+          chatId: messageId,
+          content: e,
+          type: "add",
+        });
+        // .then((res) => console.log(res));
         // Due to having some trouble with async function, I will just add the user to the chat emote here
         return [
           ...prev,
@@ -77,6 +89,8 @@ export default function ChatItemUtils({
         let currentUser = userList.find(
           (user: EmoteUserProps) => user.userId === userId
         );
+        console.log(currentUser, "currentUser");
+        console.log(userList, "userList");
         if (!currentUser) {
           // Add the current user to the ChatEmote
           // by adding a relationship between the user and the ChatEmote
@@ -97,6 +111,15 @@ export default function ChatItemUtils({
           ];
           // Update the ChatEmote's user list
           selectedEmote.users = userList;
+          // Publish the emote to the receiver
+          databaseClient.mutations.publishEmote({
+            identifier: userId,
+            receiver: receiverId,
+            chatId: messageId,
+            content: e,
+            type: "add",
+          });
+          // .then((res) => console.log(res));
         } else {
           // Remove the current user from the ChatEmote
           // by removing the relationship between the user and the ChatEmote
@@ -124,7 +147,17 @@ export default function ChatItemUtils({
           );
           // Update the ChatEmote's user list
           selectedEmote.users = userList;
+          // Publish the emote to the receiver
+          databaseClient.mutations.publishEmote({
+            identifier: userId,
+            receiver: receiverId,
+            chatId: messageId,
+            content: e,
+            type: "remove",
+          });
+          // .then((res) => console.log(res));
         }
+
         // Check if user list is empty, then remove the ChatEmote
         if (selectedEmote.users.length === 0) {
           databaseClient.mutations
@@ -132,14 +165,18 @@ export default function ChatItemUtils({
               id,
             })
             .catch((e) => console.error(e));
+
           return [...prev.filter((emote) => emote.content !== e)];
         } else {
           // Update the ChatEmote in the emotes list
           const updatedEmotesUserList = prev.map((emote) =>
             emote.content === e ? selectedEmote : emote
           );
+
           return updatedEmotesUserList;
         }
+
+        return [...prev];
       }
     });
   };

@@ -1086,70 +1086,6 @@
             "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
           }
-        },
-        "Channel": {
-          "name": "Channel",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "Channels",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "allow": "private",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
         }
       },
       "enums": {},
@@ -1186,9 +1122,89 @@
               "attributes": []
             }
           }
+        },
+        "MessageEmote": {
+          "name": "MessageEmote",
+          "fields": {
+            "identifier": {
+              "name": "identifier",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "receiver": {
+              "name": "receiver",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatId": {
+              "name": "chatId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "type": {
+              "name": "type",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
         }
       },
       "mutations": {
+        "publishEmote": {
+          "name": "publishEmote",
+          "isArray": false,
+          "type": {
+            "nonModel": "MessageEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "identifier": {
+              "name": "identifier",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "receiver": {
+              "name": "receiver",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "chatId": {
+              "name": "chatId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "type": {
+              "name": "type",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
         "publish": {
           "name": "publish",
           "isArray": false,
@@ -1325,6 +1341,28 @@
         }
       },
       "subscriptions": {
+        "receiveEmote": {
+          "name": "receiveEmote",
+          "isArray": false,
+          "type": {
+            "nonModel": "MessageEmote"
+          },
+          "isRequired": false,
+          "arguments": {
+            "identifier": {
+              "name": "identifier",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "receiver": {
+              "name": "receiver",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
         "receive": {
           "name": "receive",
           "isArray": false,

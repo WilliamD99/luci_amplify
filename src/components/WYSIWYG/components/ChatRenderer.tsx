@@ -1,6 +1,12 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { databaseClient } from "@/utils/amplify-utils.client";
-import React, { forwardRef, useContext, useEffect, useRef } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { UserDataContext } from "@/app/dms/[id]/client";
 import { convertDateTimezone, formatDateString } from "@/utils/utils";
@@ -37,6 +43,7 @@ function ChatRenderer(
     }
   };
 
+  // Subscription to receive messages
   useEffect(() => {
     ref.current?.scrollTo({
       top: ref.current?.scrollHeight,
@@ -91,6 +98,98 @@ function ChatRenderer(
 
 let ChatItemByDate = ({ contentItem }: { contentItem: ChatContentType }) => {
   const eleRef = useRef<HTMLDivElement>(null);
+  const { sender, receiver }: any = useContext(UserDataContext);
+  const [content, setContent] = useState<ChatContentType>(contentItem);
+  const handleUpdateMessage = (e: {
+    chatId: string;
+    count: number;
+    content: string;
+    identifier: string;
+    receiver: string;
+    type: string;
+  }) => {
+    let chatId = e.chatId;
+    let count = e.count;
+    let emoteContent = e.content;
+
+    setContent((prev: ChatContentType) => {
+      const chatContent = [...prev.content]; // Create a copy of the content array
+      const messageIndex = chatContent.findIndex(
+        (message: any) => message.id === chatId
+      );
+      if (messageIndex !== -1) {
+        const selectedMessage = { ...chatContent[messageIndex] }; // Create a copy of the message
+        const emoteList = selectedMessage.emotes;
+        console.log(emoteList);
+        // find the index of the emote
+        const emoteIndex = emoteList.findIndex(
+          (emote: any) => emote.content === emoteContent
+        );
+
+        if (emoteIndex !== -1) {
+          // if the emote exists, update the count
+          emoteList[emoteIndex].count = count;
+
+          let type = e.type;
+          if (type === "remove") {
+            // if the type is remove, remove the user from the list
+            emoteList[emoteIndex].users = emoteList[emoteIndex].users.filter(
+              (user: any) => user.userId !== sender.id
+            );
+          } else {
+            // if the type is add, add the user to the list
+            emoteList[emoteIndex].users.push({
+              chatEmoteId: `${chatId}${emoteContent}`,
+              createdAt: new Date().toISOString(),
+              id: `${chatId}${emoteContent}${Math.random()}`,
+              userId: sender.id, // Replace with actual user ID
+            });
+          }
+        } else {
+          // if the emote does not exist, add it to the list
+          emoteList.push({
+            id: `${chatId}${emoteContent}`,
+            content: emoteContent,
+            count: count,
+            users: Array.from({ length: count }).map(() => ({
+              chatEmoteId: `${chatId}${emoteContent}`,
+              createdAt: new Date().toISOString(),
+              id: `${chatId}${emoteContent}${Math.random()}`,
+              userId: "someUserId", // Replace with actual user ID
+            })),
+            createdAt: new Date().toISOString(),
+            messageId: chatId,
+          });
+        }
+
+        chatContent[messageIndex] = selectedMessage;
+      }
+
+      return { ...prev, content: chatContent };
+    });
+  };
+
+  // Subscription to receive emotes
+  useEffect(() => {
+    const sub = databaseClient.subscriptions
+      .receiveEmote({
+        identifier: receiver.id,
+        receiver: sender.id,
+      })
+      .subscribe({
+        next: (e: any) => {
+          console.log(e);
+          handleUpdateMessage(e);
+        },
+        error: (e) => console.log(e),
+      });
+
+    return () => sub.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    setContent(contentItem);
+  }, [contentItem]);
 
   return (
     <div ref={eleRef} className="h-full w-full">
@@ -101,7 +200,7 @@ let ChatItemByDate = ({ contentItem }: { contentItem: ChatContentType }) => {
         </button>
         <span className="line"></span>
       </div>
-      {contentItem.content.map((item) => (
+      {content.content.map((item) => (
         <ChatItem key={item.id} item={item} />
       ))}
     </div>

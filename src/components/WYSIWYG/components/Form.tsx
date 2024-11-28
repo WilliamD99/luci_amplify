@@ -32,11 +32,12 @@ export interface ChatItemContent {
     messageId: string;
     users: {
       chatEmoteId: string;
-      createdAt: string;
+      createdAt?: string;
       updatedAt?: string;
       id: string;
       userId: string;
     }[];
+    count?: number;
   }[];
 }
 

@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { postConfirmation } from "../auth/post-confirmation/resource";
+import { count } from "console";
 
 const schema = a
   .schema({
@@ -111,14 +112,24 @@ const schema = a
       receiver: a.string().required(),
       files: a.string(),
     }),
+    MessageEmote: a.customType({
+      identifier: a.string().required(),
+      receiver: a.string().required(),
+      chatId: a.string().required(),
+      content: a.string().required(),
+      type: a.string().required(),
+    }),
     // Manage Chat message live emotes
     publishEmote: a
       .mutation()
       .arguments({
         identifier: a.string().required(), // id of the sender
         receiver: a.string().required(),
+        chatId: a.string().required(),
+        content: a.string().required(),
+        type: a.string().required(),
       })
-      .returns(a.ref("Message"))
+      .returns(a.ref("MessageEmote"))
       .handler(
         a.handler.custom({ entry: "./emote-handler/function/publish.js" })
       )
